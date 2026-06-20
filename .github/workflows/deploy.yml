@@ -1,0 +1,128 @@
+# .github/workflows/deploy.yml
+# CoopPlantão · CI/CD via GitHub Actions → Netlify
+# ─────────────────────────────────────────────────
+# Secrets necessários no GitHub (Settings → Secrets → Actions):
+#   NETLIFY_AUTH_TOKEN    → Netlify: User Settings → Applications → New access token
+#   NETLIFY_SITE_ID       → Netlify: Site Settings → General → Site ID
+#   VITE_SUPABASE_URL     → Supabase: Settings → API → Project URL
+#   VITE_SUPABASE_ANON_KEY → Supabase: Settings → API → anon public key
+#   VITE_COOPERATIVA_SIGLA → ex: CEMERGE
+#   VITE_APP_URL          → ex: https://plantoes.cemerge.coop.br
+
+name: Deploy CoopPlantão
+
+on:
+  push:
+    branches:
+      - main          # Deploy em produção
+      - develop       # Deploy de preview
+  pull_request:
+    branches:
+      - main          # Preview para cada PR
+
+jobs:
+  # ── JOB 1: Lint + Build ─────────────────────────────────────
+  build:
+    name: 🔨 Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: 📦 Instalar dependências
+        run: npm ci
+
+      - name: 🏗️ Build
+        env:
+          # Injeta variáveis de ambiente no build do Vite
+          VITE_SUPABASE_URL:      ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_COOPERATIVA_SIGLA: ${{ secrets.VITE_COOPERATIVA_SIGLA }}
+          VITE_APP_URL:           ${{ secrets.VITE_APP_URL }}
+          VITE_APP_ENV:           production
+        run: npm run build
+
+      - name: 📤 Upload artefato de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  # ── JOB 2: Deploy produção (main) ───────────────────────────
+  deploy-production:
+    name: 🚀 Deploy → Produção
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.deploy-url }}
+
+    steps:
+      - name: 📥 Download artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: 🚀 Deploy no Netlify (produção)
+        id: deploy
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist --prod --message "Deploy produção — ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID:    ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: ✅ Resumo do deploy
+        run: |
+          echo "## 🚀 Deploy realizado com sucesso!" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** ${{ steps.deploy.outputs.deploy-url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+
+  # ── JOB 3: Deploy preview (PRs e branch develop) ─────────────
+  deploy-preview:
+    name: 🔍 Deploy → Preview
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop'
+    environment:
+      name: preview
+
+    steps:
+      - name: 📥 Download artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: 🔍 Deploy preview no Netlify
+        id: preview
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist --message "Preview PR#${{ github.event.pull_request.number }} — ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID:    ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: 💬 Comentar URL do preview no PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🔍 Preview disponível!\n\n**URL:** ${{ steps.preview.outputs.deploy-url }}\n\n> Deploy automático do PR #${{ github.event.pull_request.number }}`
+            })

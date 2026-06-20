@@ -1,0 +1,57 @@
+# CoopPlantão · netlify.toml
+# ─────────────────────────────────────────────────────────────
+
+[build]
+  command   = "npm run build"
+  publish   = "dist"
+  # Node mínimo 20 para compatibilidade com Vite 5
+  environment = { NODE_VERSION = "20" }
+
+# ── Redirect SPA: todas as rotas → index.html ────────────────
+# Necessário para React Router / magic links funcionarem
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ── Magic link — rota de acesso ──────────────────────────────
+# /acesso?t=TOKEN → app já detecta o token via URLSearchParams
+[[redirects]]
+  from   = "/acesso"
+  to     = "/index.html"
+  status = 200
+
+# ── Headers de segurança ─────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Evita clickjacking
+    X-Frame-Options         = "DENY"
+    # Bloqueia MIME sniffing
+    X-Content-Type-Options  = "nosniff"
+    # Força HTTPS por 1 ano
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Política de referência
+    Referrer-Policy         = "strict-origin-when-cross-origin"
+    # Permissões de browser APIs
+    Permissions-Policy      = "camera=(), microphone=(), geolocation=()"
+    # CSP básica — ajuste conforme adicionar CDNs
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; img-src 'self' data:;"
+
+# Assets estáticos — cache agressivo
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ── Contextos de deploy ──────────────────────────────────────
+# Preview de PRs aponta para branch de staging do Supabase
+[context.deploy-preview]
+  command = "npm run build"
+  [context.deploy-preview.environment]
+    VITE_APP_ENV = "preview"
+
+[context.production]
+  command = "npm run build"
+  [context.production.environment]
+    VITE_APP_ENV = "production"
