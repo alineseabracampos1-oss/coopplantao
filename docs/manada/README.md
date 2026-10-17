@@ -9,6 +9,7 @@
 | [`calendario-q4-2026.csv`](calendario-q4-2026.csv) | O mesmo calendário em planilha (importar no Sheets/Notion/Trello) |
 | [`03-banco-de-conteudos.md`](03-banco-de-conteudos.md) | Manifesto, boas-vindas, quiz, Verdade ou Mito, roteiros das lives, desafios, prêmios |
 | [`04-metricas.md`](04-metricas.md) | KPIs do grupo, score de conteúdo e rotina de revisão mensal |
+| [`fqc-banco-de-conteudo.html`](fqc-banco-de-conteudo.html) | Fonte da página do banco de conteúdo FQC (publicada em https://claude.ai/artifact/WKtgZo4855Mq5bgBvpaXfo), com aprovação e área de publicação |
 
 **Próximos passos (antes de 19/10)**
 1. Fixar Manifesto e Regras.

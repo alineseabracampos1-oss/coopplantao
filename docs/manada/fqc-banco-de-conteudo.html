@@ -1,0 +1,462 @@
+<title>Banco de Conteúdo FQC</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: caderno editorial da equipe FQC — índice lateral + fichas de conteúdo, com faixa de status e área de gravação no topo */
+:root{
+  --paper:#f5f1e9; --card:#fffdf9; --ink:#233c36; --muted:#637069; --line:#dcded3; --accent:#a16c46; --sage:#597567;
+  --panel:#233c36; --panel-fg:#ffffff; --panel-muted:#cbd8d1; --panel-line:#71877e; --panel-accent:#d9be96; --cta:#e8d2b2; --cta-fg:#233c36;
+  --field:#fcfaf6;
+  --s-ideia:#7b7f86; --s-ideia-bg:#eceae6;
+  --s-aguardando:#8a5a12; --s-aguardando-bg:#f6e6c8;
+  --s-ajustar:#9b3b2e; --s-ajustar-bg:#f5dcd6;
+  --s-aprovado:#2f6b4f; --s-aprovado-bg:#d9eadf;
+  --s-publicado:#31516e; --s-publicado-bg:#dbe5ee;
+  --serif:Georgia,"Times New Roman",serif; --sans:Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141c1a; --card:#1b2522; --ink:#e9e4d8; --muted:#a2ada6; --line:#2f3b37; --accent:#d29d72; --sage:#9dbba9;
+  --panel:#0e1513; --panel-fg:#f3efe6; --panel-muted:#a9b8b0; --panel-line:#3c4c46; --panel-accent:#d9be96; --cta:#e8d2b2; --cta-fg:#1b2522;
+  --field:#121a18;
+  --s-ideia:#b9bcc2; --s-ideia-bg:#2a2e33;
+  --s-aguardando:#f0c77d; --s-aguardando-bg:#3d2f17;
+  --s-ajustar:#f2a597; --s-ajustar-bg:#43231e;
+  --s-aprovado:#8fd3ae; --s-aprovado-bg:#183a2a;
+  --s-publicado:#9cc3e6; --s-publicado-bg:#1b2e40;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141c1a; --card:#1b2522; --ink:#e9e4d8; --muted:#a2ada6; --line:#2f3b37; --accent:#d29d72; --sage:#9dbba9;
+  --panel:#0e1513; --panel-fg:#f3efe6; --panel-muted:#a9b8b0; --panel-line:#3c4c46; --panel-accent:#d9be96; --cta:#e8d2b2; --cta-fg:#1b2522;
+  --field:#121a18;
+  --s-ideia:#b9bcc2; --s-ideia-bg:#2a2e33;
+  --s-aguardando:#f0c77d; --s-aguardando-bg:#3d2f17;
+  --s-ajustar:#f2a597; --s-ajustar-bg:#43231e;
+  --s-aprovado:#8fd3ae; --s-aprovado-bg:#183a2a;
+  --s-publicado:#9cc3e6; --s-publicado-bg:#1b2e40;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans)}
+button,select,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;border-radius:7px;padding:10px 14px;font-size:13px;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid #ba895a;outline-offset:3px}
+a{color:inherit}
+.wrap{max-width:1220px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media(min-width:860px){.wrap{padding-left:max(36px,env(safe-area-inset-left,0px));padding-right:max(36px,env(safe-area-inset-right,0px))}}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.17em;color:var(--accent);text-transform:uppercase}
+header{padding-block:30px 34px}
+.brand{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:20px;gap:16px;flex-wrap:wrap}
+.brand-name{font:24px var(--serif)}
+.signature{font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.hero{padding-top:40px;max-width:820px}
+h1{font:clamp(34px,5.4vw,58px)/1.08 var(--serif);letter-spacing:-.03em;margin:16px 0 18px;text-wrap:balance}
+h1 em{font-weight:normal;color:var(--sage)}
+.intro{max-width:620px;color:var(--muted);font-size:17px;margin:0}
+
+/* faixa de status */
+.pipeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:30px 0 0}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 14px 12px;text-align:left;display:grid;gap:4px;font-weight:400}
+.stage .n{font:30px/1 var(--serif);font-variant-numeric:tabular-nums}
+.stage .l{font-size:12px;color:var(--muted)}
+.stage .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px}
+.stage[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+@media(max-width:700px){.pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.stage:last-child{grid-column:span 2}}
+
+/* área de gravação */
+.copy-area{background:var(--panel);color:var(--panel-fg);border-radius:18px;padding:28px;margin:34px 0 40px}
+.copy-area .eyebrow{color:var(--panel-accent)}
+.copy-area h2{font:30px var(--serif);margin:4px 0 6px}
+.copy-area p.sub{color:var(--panel-muted);font-size:14px;margin:0}
+.copy-grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;margin-top:22px}
+.copy-grid label{display:block;font-size:13px;margin-bottom:8px}
+.copy-grid select{width:100%;border-radius:8px;border:1px solid var(--panel-line);padding:12px 8px;background:var(--field);color:var(--ink);font-size:14px}
+.check{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--panel-muted);margin:12px 0 16px}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px}
+.primary{background:var(--cta);color:var(--cta-fg)}
+.ghost{background:transparent;color:var(--panel-fg);border:1px solid var(--panel-line)}
+#prompt-text{display:block;width:100%;height:330px;min-height:200px;resize:vertical;border:1px solid var(--panel-line);border-radius:9px;background:var(--field);color:var(--ink);padding:20px;font:18px/1.7 var(--sans)}
+.status-line{min-height:22px;margin:12px 0 0;font-size:13px;color:var(--panel-accent)}
+@media(max-width:850px){.copy-grid{grid-template-columns:1fr}.copy-area{padding:22px 18px}}
+
+/* barra de filtros */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:26px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:4px}
+.tabs button{background:transparent;color:var(--muted);padding:8px 12px}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.field{display:grid;gap:4px;font-size:12px;color:var(--muted)}
+.field select,.field input{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:9px 10px;font-size:14px;color:var(--ink);min-width:0}
+.grow{flex:1 1 200px}
+.new-btn{background:var(--accent);color:#fff;margin-left:auto}
+@media(max-width:600px){.new-btn{margin-left:0;width:100%}}
+
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;align-items:start}
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 32px);overflow:auto;padding-right:6px}
+aside h2{font:21px var(--serif);margin:6px 0 12px}
+nav{display:grid}
+nav a{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px;padding:10px 0;border-bottom:1px solid var(--line);text-decoration:none;font-size:13.5px;line-height:1.4}
+nav a:hover{color:var(--accent)}
+nav .d{color:var(--accent);font-size:11px;font-variant-numeric:tabular-nums;padding-top:2px}
+nav .m{grid-column:1/-1;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:16px 0 4px;border-bottom:1px solid var(--line)}
+nav i{font-style:normal;width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:1px}
+@media(max-width:850px){.layout{grid-template-columns:1fr;gap:20px}aside{position:static;max-height:280px;border:1px solid var(--line);border-radius:10px;padding:4px 14px 10px;background:var(--card)}}
+
+.month-head{font:28px var(--serif);margin:10px 0 18px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.month-head span{font:12px var(--sans);color:var(--muted);letter-spacing:.06em}
+article{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:30px 38px;margin:0 0 22px;scroll-margin-top:20px}
+.art-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:50px;padding:4px 11px;font-size:12px;font-weight:700;white-space:nowrap}
+article h3{font:32px/1.15 var(--serif);letter-spacing:-.02em;margin:18px 0 10px;text-wrap:balance}
+.pauta{color:var(--muted);font-size:14px;margin:0 0 22px;max-width:65ch}
+.pauta b{color:var(--ink);font-weight:600}
+.story{max-width:68ch}
+.story p{font-size:17px;line-height:1.8;margin:0 0 15px}
+.story p:first-child{font-weight:600}
+.story p.closing{font:italic 22px/1.5 var(--serif);border-top:1px solid var(--line);padding-top:20px;margin-top:22px}
+.story p.todo{background:var(--s-aguardando-bg);color:var(--s-aguardando);border-radius:6px;padding:6px 10px;font-size:14px;font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin-top:18px}
+.meta a{color:var(--accent)}
+.note{margin-top:14px;border-left:3px solid var(--s-ajustar);padding:6px 12px;font-size:14px;background:var(--s-ajustar-bg);color:var(--ink);border-radius:0 6px 6px 0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.outline{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.approve{background:var(--s-aprovado);color:var(--card)}
+.publish{background:var(--s-publicado);color:var(--card)}
+.adjust{background:transparent;border:1px solid var(--s-ajustar);color:var(--s-ajustar)}
+@media(max-width:520px){article{padding:22px 18px}article h3{font-size:26px}.story p{font-size:16px}}
+
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:34px;text-align:center;color:var(--muted)}
+.empty h3{font:24px var(--serif);color:var(--ink);margin:0 0 8px}
+.banner{background:var(--s-aguardando-bg);color:var(--s-aguardando);border-radius:10px;padding:12px 16px;font-size:14px;margin:0 0 20px}
+footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:30px}
+
+/* editor */
+dialog{border:0;border-radius:14px;padding:0;width:min(760px,calc(100vw - 24px));max-height:calc(100vh - 24px);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(10,16,14,.55)}
+.ed-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);z-index:1}
+.ed-head h2{font:24px var(--serif);margin:0}
+.ed-body{padding:20px 24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ed-body .full{grid-column:1/-1}
+.ed-body label{display:grid;gap:5px;font-size:12.5px;color:var(--muted)}
+.ed-body input,.ed-body select,.ed-body textarea{border:1px solid var(--line);border-radius:8px;background:var(--field);padding:10px;font-size:15px;color:var(--ink);width:100%}
+.ed-body textarea{resize:vertical}
+#f-texto{min-height:260px;line-height:1.6}
+.hint{font-size:12px;color:var(--muted)}
+.ed-foot{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--card)}
+.danger{background:transparent;color:var(--s-ajustar);border:1px solid var(--s-ajustar)}
+.confirm{display:flex;gap:8px;align-items:center;font-size:13px;flex-wrap:wrap}
+.save{background:var(--ink);color:var(--paper)}
+@media(max-width:560px){.ed-body{grid-template-columns:1fr}}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:30px;font-size:14px;z-index:20}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+<header class="wrap" id="inicio">
+  <div class="brand"><div class="brand-name">Finanças que Curam</div><div class="signature">Grupo FQC · Comunidade Manada · Por Aline Seabra</div></div>
+  <div class="hero">
+    <div class="eyebrow">Banco de conteúdo · controle de aprovação</div>
+    <h1>Tudo o que vai para o grupo,<br><em>em um só lugar.</em></h1>
+    <p class="intro">Roteiros, posts, jogos, lives, desafios, notícias e materiais do FQC. Cada peça passa pela sua aprovação antes de ir para o grupo, e você pode editar ou incluir novos momentos a qualquer hora.</p>
+  </div>
+  <div class="pipeline" id="pipeline" role="group" aria-label="Filtrar por etapa"></div>
+</header>
+
+<main class="wrap">
+  <section class="copy-area" id="gravacao" aria-labelledby="copy-title">
+    <span class="eyebrow">Área de publicação</span>
+    <h2 id="copy-title">Texto pronto para copiar</h2>
+    <p class="sub">Escolha um conteúdo aprovado, copie e cole no grupo ou no seu teleprompter.</p>
+    <div class="copy-grid">
+      <div>
+        <label for="script-select">Qual conteúdo você vai usar?</label>
+        <select id="script-select"></select>
+        <label class="check" for="only-approved"><input type="checkbox" id="only-approved" checked> Mostrar só os aprovados</label>
+        <div class="btn-row"><button class="primary" id="copy">Copiar texto</button><button class="ghost" id="mark-pub">Marcar como publicado</button></div>
+        <p class="status-line" id="copy-status" role="status" aria-live="polite"></p>
+      </div>
+      <div><label for="prompt-text">Fala ou texto do post</label><textarea id="prompt-text" readonly spellcheck="false"></textarea></div>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="tabs" role="tablist" aria-label="Visão">
+      <button role="tab" id="tab-cal" aria-selected="true" data-view="cal">Calendário</button>
+      <button role="tab" id="tab-banco" aria-selected="false" data-view="banco">Banco (sem data)</button>
+      <button role="tab" id="tab-todos" aria-selected="false" data-view="todos">Todos</button>
+    </div>
+    <label class="field" for="flt-tipo">Tipo<select id="flt-tipo"><option value="">Todos os tipos</option></select></label>
+    <label class="field" for="flt-mes">Mês<select id="flt-mes"><option value="">Todos</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select></label>
+    <label class="field grow" for="flt-busca">Buscar<input id="flt-busca" type="search" placeholder="Título, texto ou quadro"></label>
+    <button class="outline" id="export">Baixar planilha</button>
+    <button class="new-btn" id="new">+ Novo conteúdo</button>
+  </div>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <div class="layout">
+    <aside><div class="eyebrow">Nesta seleção</div><h2 id="nav-title">Encontre um conteúdo</h2><nav id="nav" aria-label="Índice"></nav></aside>
+    <div id="list"><div class="empty"><h3>Carregando o banco de conteúdo…</h3><p>Os roteiros, posts e materiais do FQC aparecem aqui em instantes.</p></div></div>
+  </div>
+
+  <footer><span>Finanças que Curam · Por Aline Seabra</span><span>Organize o dinheiro sem ignorar o que você sente.</span></footer>
+</main>
+
+<dialog id="editor" aria-labelledby="ed-title">
+  <form id="ed-form" method="dialog">
+    <div class="ed-head"><h2 id="ed-title">Novo conteúdo</h2><button type="button" class="outline" id="ed-close">Fechar</button></div>
+    <div class="ed-body">
+      <label class="full" for="f-titulo">Título<input id="f-titulo" required maxlength="140"></label>
+      <label for="f-tipo">Tipo<select id="f-tipo"></select></label>
+      <label for="f-status">Etapa<select id="f-status"></select></label>
+      <label for="f-quadro">Quadro<input id="f-quadro" list="quadros" placeholder="Ex.: Quarta das Emoções"><datalist id="quadros"></datalist></label>
+      <label for="f-formato">Formato<input id="f-formato" placeholder="Ex.: Carrossel, vídeo 60s, enquete"></label>
+      <label for="f-data">Data de publicação<input id="f-data" type="date"><span class="hint">Deixe em branco para guardar no banco.</span></label>
+      <label for="f-horario">Horário<input id="f-horario" placeholder="Ex.: 19h"></label>
+      <label class="full" for="f-pauta">Pauta / objetivo<textarea id="f-pauta" rows="2"></textarea></label>
+      <label class="full" for="f-texto">Texto completo (fala ou post)<textarea id="f-texto"></textarea><span class="hint">Uma linha em branco separa cada fala. Trechos entre [colchetes] aparecem destacados como pendência.</span></label>
+      <label class="full" for="f-material">Link do material (planilha, PDF, vídeo, arte)<input id="f-material" type="url" placeholder="https://"></label>
+      <label class="full" for="f-notas">Observações da aprovação<textarea id="f-notas" rows="2" placeholder="Ex.: trocar o exemplo do segundo parágrafo"></textarea></label>
+    </div>
+    <div class="ed-foot">
+      <div class="confirm" id="del-area"><button type="button" class="danger" id="ed-del">Excluir</button></div>
+      <div class="btn-row"><button type="button" class="outline" id="ed-cancel">Cancelar</button><button type="submit" class="save" id="ed-save">Salvar</button></div>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
+
+<script>
+const STATUS = [
+  {k:"ideia", l:"Ideia", d:"no banco"},
+  {k:"aguardando", l:"Aguardando aprovação", d:"para você revisar"},
+  {k:"ajustar", l:"Ajustar", d:"voltou para ajuste"},
+  {k:"aprovado", l:"Aprovado", d:"pronto para publicar"},
+  {k:"publicado", l:"Publicado", d:"já foi para o grupo"},
+];
+const TIPOS = ["Roteiro de vídeo","Post","Carrossel","Enquete","Jogo","Live","Desafio","Notícia","Momento","Material"];
+const DIAS = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const MESES = ["","Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const $ = s => document.querySelector(s);
+const statusOf = k => STATUS.find(s => s.k === k) || STATUS[1];
+
+let items = [], db = null, canWrite = true, view = "cal", stFilter = "", editingId = null;
+
+function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2600);}
+function fmtDate(iso){if(!iso)return"";const d=new Date(iso+"T12:00:00");return DIAS[d.getDay()]+" "+iso.slice(8,10)+"/"+iso.slice(5,7);}
+function fmtStamp(ts){if(!ts)return"";const d=new Date(ts);return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"});}
+function pill(k){const s=statusOf(k);const el=document.createElement("span");el.className="pill";el.style.background=`var(--s-${s.k}-bg)`;el.style.color=`var(--s-${s.k})`;el.textContent=s.l;return el;}
+function sortItems(a,b){
+  if(a.data&&b.data) return a.data.localeCompare(b.data)||(a.ordem||0)-(b.ordem||0);
+  if(a.data) return -1; if(b.data) return 1;
+  return (a.ordem||0)-(b.ordem||0)||(a.titulo||"").localeCompare(b.titulo||"");
+}
+
+function filtered(ignoreStatus){
+  const tipo=$("#flt-tipo").value, mes=$("#flt-mes").value, q=$("#flt-busca").value.trim().toLowerCase();
+  return items.filter(it=>{
+    if(view==="cal"&&!it.data) return false;
+    if(view==="banco"&&it.data) return false;
+    if(!ignoreStatus&&stFilter&&it.status!==stFilter) return false;
+    if(tipo&&it.tipo!==tipo) return false;
+    if(mes&&(!it.data||Number(it.data.slice(5,7))!==Number(mes))) return false;
+    if(q&&!((it.titulo||"")+" "+(it.texto||"")+" "+(it.quadro||"")+" "+(it.pauta||"")).toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function renderPipeline(){
+  const base=filtered(true), box=$("#pipeline"); box.textContent="";
+  STATUS.forEach(s=>{
+    const b=document.createElement("button");b.className="stage";b.type="button";b.setAttribute("aria-pressed",String(stFilter===s.k));
+    const n=document.createElement("span");n.className="n";n.textContent=base.filter(i=>i.status===s.k).length;
+    const l=document.createElement("span");l.className="l";const dot=document.createElement("span");dot.className="dot";dot.style.background=`var(--s-${s.k})`;
+    l.append(dot,document.createTextNode(s.l+" · "+s.d));
+    b.append(n,l);b.addEventListener("click",()=>{stFilter=stFilter===s.k?"":s.k;render();});
+    box.append(b);
+  });
+}
+
+function storyNode(text){
+  const div=document.createElement("div");div.className="story";
+  const parts=(text||"").split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
+  parts.forEach((p,i)=>{const el=document.createElement("p");el.textContent=p;
+    if(/^\[.*\]$/s.test(p)) el.className="todo"; else if(i===parts.length-1&&parts.length>3) el.className="closing";
+    div.append(el);});
+  return div;
+}
+
+function card(it){
+  const a=document.createElement("article");a.id="c-"+it.id;
+  const top=document.createElement("div");top.className="art-top";
+  const eb=document.createElement("span");eb.className="eyebrow";
+  eb.textContent=[it.tipo,it.quadro,it.data?fmtDate(it.data):"Banco",it.horario].filter(Boolean).join(" · ");
+  top.append(eb,pill(it.status));
+  const h=document.createElement("h3");h.textContent=it.titulo||"Sem título";
+  a.append(top,h);
+  if(it.pauta||it.formato){const p=document.createElement("p");p.className="pauta";
+    if(it.formato){const b=document.createElement("b");b.textContent=it.formato+". ";p.append(b);}
+    p.append(document.createTextNode(it.pauta||""));a.append(p);}
+  a.append(storyNode(it.texto));
+  if(it.notas){const n=document.createElement("div");n.className="note";n.textContent="Observação: "+it.notas;a.append(n);}
+  const meta=document.createElement("div");meta.className="meta";
+  if(it.material){const l=document.createElement("a");l.href=it.material;l.target="_blank";l.rel="noopener";l.textContent="Abrir material ↗";meta.append(l);}
+  if(it.aprovadoEm){const s=document.createElement("span");s.textContent="Aprovado em "+fmtStamp(it.aprovadoEm);meta.append(s);}
+  if(it.publicadoEm){const s=document.createElement("span");s.textContent="Publicado em "+fmtStamp(it.publicadoEm);meta.append(s);}
+  if(meta.childNodes.length)a.append(meta);
+  const act=document.createElement("div");act.className="actions";
+  const btn=(label,cls,fn,dis)=>{const b=document.createElement("button");b.type="button";b.className=cls;b.textContent=label;b.disabled=!!dis;b.addEventListener("click",fn);act.append(b);};
+  const ro=!canWrite||!db;
+  if(it.status!=="aprovado"&&it.status!=="publicado") btn("Aprovar","approve",()=>setStatus(it,"aprovado"),ro);
+  if(it.status==="aprovado") btn("Marcar como publicado","publish",()=>setStatus(it,"publicado"),ro);
+  if(it.status!=="ajustar"&&it.status!=="publicado") btn("Pedir ajuste","adjust",()=>openEditor(it,"ajustar"),ro);
+  if(it.status==="publicado"||it.status==="aprovado") btn("Voltar para revisão","outline",()=>setStatus(it,"aguardando"),ro);
+  btn("Editar","outline",()=>openEditor(it),ro);
+  btn("Usar na área de publicação ↑","outline",()=>{useInCopy(it.id);$("#gravacao").scrollIntoView();});
+  a.append(act);
+  return a;
+}
+
+function renderList(){
+  const list=$("#list"), nav=$("#nav"); list.textContent=""; nav.textContent="";
+  const rows=filtered(false).sort(sortItems);
+  $("#nav-title").textContent=rows.length+(rows.length===1?" conteúdo":" conteúdos");
+  if(!rows.length){
+    const e=document.createElement("div");e.className="empty";
+    const h=document.createElement("h3");h.textContent=items.length?"Nada nesta seleção":"O banco ainda está vazio";
+    const p=document.createElement("p");p.textContent=items.length?"Troque a etapa, o tipo ou a busca para ver outros conteúdos.":"Use “+ Novo conteúdo” para cadastrar o primeiro roteiro, post ou material.";
+    e.append(h,p);list.append(e);return;
+  }
+  let lastM=null;
+  rows.forEach(it=>{
+    const m=it.data?Number(it.data.slice(5,7)):0;
+    if(m!==lastM){lastM=m;
+      const label=m?MESES[m]:"Banco de conteúdo";
+      const mh=document.createElement("h2");mh.className="month-head";mh.textContent=label;
+      const cnt=document.createElement("span");cnt.textContent=rows.filter(r=>(r.data?Number(r.data.slice(5,7)):0)===m).length+" peças";mh.append(cnt);list.append(mh);
+      const nm=document.createElement("span");nm.className="m";nm.textContent=label;nav.append(nm);}
+    list.append(card(it));
+    const l=document.createElement("a");l.href="#c-"+it.id;
+    const d=document.createElement("span");d.className="d";d.textContent=it.data?it.data.slice(8,10)+"/"+it.data.slice(5,7):"—";
+    const t=document.createElement("span");const dot=document.createElement("i");dot.style.background=`var(--s-${statusOf(it.status).k})`;
+    t.append(dot,document.createTextNode(it.titulo||"Sem título"));l.append(d,t);nav.append(l);
+  });
+}
+
+function renderCopy(keep){
+  const sel=$("#script-select"), only=$("#only-approved").checked, prev=keep||sel.value;
+  const rows=items.filter(i=>!only||i.status==="aprovado").sort(sortItems);
+  sel.textContent="";
+  if(!rows.length){const o=document.createElement("option");o.value="";o.textContent=only?"Nenhum conteúdo aprovado ainda":"Banco vazio";sel.append(o);$("#prompt-text").value="";$("#mark-pub").disabled=true;return;}
+  rows.forEach(it=>{const o=document.createElement("option");o.value=it.id;o.textContent=(it.data?it.data.slice(8,10)+"/"+it.data.slice(5,7)+" · ":"")+it.titulo;sel.append(o);});
+  if(rows.some(r=>r.id===prev)) sel.value=prev;
+  syncCopy();
+}
+function syncCopy(){const it=items.find(i=>i.id===$("#script-select").value);$("#prompt-text").value=it?it.texto||"":"";$("#copy-status").textContent="";
+  $("#mark-pub").disabled=!it||it.status!=="aprovado"||!canWrite||!db;}
+function useInCopy(id){const it=items.find(i=>i.id===id);if(it&&it.status!=="aprovado")$("#only-approved").checked=false;renderCopy(id);}
+
+function render(){renderPipeline();renderList();renderCopy();}
+
+async function write(id,data){
+  if(!db) return false;
+  try{await db.collection("conteudos").doc(id).update(data);return true;}
+  catch(e){
+    if(e&&e.code==="invalid_argument"){canWrite=false;showBanner("Você pode ver o banco, mas não tem permissão para alterar. Peça acesso de editora à Aline.");render();}
+    else toast("Não foi possível salvar agora. Tente de novo em instantes.");
+    return false;
+  }
+}
+async function setStatus(it,k){
+  const data={status:k,atualizadoEm:Date.now()};
+  if(k==="aprovado") data.aprovadoEm=Date.now();
+  if(k==="publicado") data.publicadoEm=Date.now();
+  if(await write(it.id,data)) toast(k==="aprovado"?"Aprovado. Já está na área de publicação.":k==="publicado"?"Marcado como publicado.":"Voltou para revisão.");
+}
+
+/* editor */
+const ed=$("#editor");
+function fillSelect(sel,opts){sel.textContent="";opts.forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;sel.append(o);});}
+function openEditor(it,forceStatus){
+  editingId=it?it.id:null;
+  $("#ed-title").textContent=it?"Editar conteúdo":"Novo conteúdo";
+  $("#f-titulo").value=it?.titulo||""; $("#f-tipo").value=it?.tipo||"Post"; $("#f-status").value=forceStatus||it?.status||"aguardando";
+  $("#f-quadro").value=it?.quadro||""; $("#f-formato").value=it?.formato||""; $("#f-data").value=it?.data||""; $("#f-horario").value=it?.horario||"";
+  $("#f-pauta").value=it?.pauta||""; $("#f-texto").value=it?.texto||""; $("#f-material").value=it?.material||""; $("#f-notas").value=it?.notas||"";
+  resetDel(); $("#del-area").hidden=!it;
+  if(typeof ed.showModal==="function") ed.showModal(); else ed.setAttribute("open","");
+  (forceStatus==="ajustar"?$("#f-notas"):$("#f-titulo")).focus();
+}
+function closeEditor(){if(ed.open)ed.close();editingId=null;}
+function resetDel(){const a=$("#del-area");a.textContent="";const b=document.createElement("button");b.type="button";b.className="danger";b.textContent="Excluir";b.addEventListener("click",askDel);a.append(b);}
+function askDel(){const a=$("#del-area");a.textContent="";const s=document.createElement("span");s.textContent="Excluir de vez?";
+  const y=document.createElement("button");y.type="button";y.className="danger";y.textContent="Sim, excluir";y.addEventListener("click",doDel);
+  const n=document.createElement("button");n.type="button";n.className="outline";n.textContent="Não";n.addEventListener("click",resetDel);a.append(s,y,n);}
+async function doDel(){if(!db||!editingId)return;try{await db.collection("conteudos").doc(editingId).delete();closeEditor();toast("Conteúdo excluído.");}catch(e){toast("Não foi possível excluir agora.");}}
+$("#ed-close").addEventListener("click",closeEditor);$("#ed-cancel").addEventListener("click",closeEditor);
+$("#ed-form").addEventListener("submit",async ev=>{
+  ev.preventDefault(); if(!db){toast("Sem conexão com o banco.");return;}
+  const titulo=$("#f-titulo").value.trim(); if(!titulo){$("#f-titulo").focus();return;}
+  const status=$("#f-status").value, now=Date.now();
+  const data={titulo,tipo:$("#f-tipo").value,status,quadro:$("#f-quadro").value.trim(),formato:$("#f-formato").value.trim(),data:$("#f-data").value,
+    horario:$("#f-horario").value.trim(),pauta:$("#f-pauta").value.trim(),texto:$("#f-texto").value.replace(/\r/g,"").trim(),material:$("#f-material").value.trim(),
+    notas:$("#f-notas").value.trim(),atualizadoEm:now};
+  const prev=items.find(i=>i.id===editingId);
+  if(status==="aprovado"&&prev?.status!=="aprovado") data.aprovadoEm=now;
+  if(status==="publicado"&&prev?.status!=="publicado") data.publicadoEm=now;
+  $("#ed-save").disabled=true;
+  try{
+    if(editingId) await db.collection("conteudos").doc(editingId).update(data);
+    else {data.criadoEm=now;data.ordem=now;await db.collection("conteudos").doc("n-"+now.toString(36)).set(data);}
+    closeEditor(); toast("Salvo.");
+  }catch(e){
+    if(e&&e.code==="invalid_argument"){canWrite=false;showBanner("Você pode ver o banco, mas não tem permissão para alterar.");closeEditor();render();}
+    else if(e&&e.code==="quota_exceeded") toast("O banco chegou ao limite de itens. Exclua conteúdos antigos para incluir novos.");
+    else toast("Não foi possível salvar agora. Tente de novo.");
+  }finally{$("#ed-save").disabled=false;}
+});
+
+/* controles */
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{view=b.dataset.view;
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));render();}));
+["#flt-tipo","#flt-mes"].forEach(s=>$(s).addEventListener("change",render));
+let qT;$("#flt-busca").addEventListener("input",()=>{clearTimeout(qT);qT=setTimeout(render,200);});
+$("#script-select").addEventListener("change",syncCopy);
+$("#only-approved").addEventListener("change",()=>renderCopy());
+$("#new").addEventListener("click",()=>openEditor(null));
+$("#copy").addEventListener("click",async()=>{const f=$("#prompt-text"),t=f.value;if(!t)return;let ok=false;
+  try{await navigator.clipboard.writeText(t);ok=true;}catch(e){}
+  if(!ok){f.focus();f.select();try{ok=document.execCommand("copy");}catch(e){}}
+  $("#copy-status").textContent=ok?"Texto copiado. Agora é só colar no grupo ou no teleprompter.":"Texto selecionado. Use Ctrl+C ou ⌘C para copiar.";});
+$("#mark-pub").addEventListener("click",()=>{const it=items.find(i=>i.id===$("#script-select").value);if(it)setStatus(it,"publicado");});
+fillSelect($("#f-tipo"),TIPOS.map(t=>[t,t]));fillSelect($("#f-status"),STATUS.map(s=>[s.k,s.l]));
+TIPOS.forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;$("#flt-tipo").append(o);});
+function showBanner(msg){const b=$("#banner");b.textContent=msg;b.hidden=false;}
+
+/* exportar */
+let downloads=null;
+$("#export").hidden=true;
+$("#export").addEventListener("click",async()=>{
+  const cols=["data","horario","tipo","quadro","formato","status","titulo","pauta","texto","material","notas"];
+  const esc=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+  const csv="﻿"+cols.join(";")+"\n"+items.slice().sort(sortItems).map(i=>cols.map(c=>esc(c==="status"?statusOf(i.status).l:i[c])).join(";")).join("\n");
+  try{await downloads.save({filename:"banco-de-conteudo-fqc.csv",data:new Blob([csv],{type:"text/csv"})});}catch(e){toast("Download cancelado.");}
+});
+
+/* datalist de quadros */
+function fillQuadros(){const dl=$("#quadros");dl.textContent="";[...new Set(items.map(i=>i.quadro).filter(Boolean))].sort().forEach(q=>{const o=document.createElement("option");o.value=q;dl.append(o);});}
+
+(async()=>{
+  try{downloads=await window.claude?.use?.("downloads");if(downloads)$("#export").hidden=false;}catch(e){}
+  try{
+    const user=await window.claude?.use?.("user");
+    if(user){const c=await user.can?.("data.write");if(c===false)canWrite=false;}
+  }catch(e){}
+  try{db=await window.claude?.use?.("db");}catch(e){db=null;}
+  if(!db){showBanner("Abra este banco pelo claude.ai, com a sua conta conectada, para ver e editar os conteúdos.");
+    $("#list").textContent="";const e=document.createElement("div");e.className="empty";const h=document.createElement("h3");h.textContent="Banco indisponível nesta visualização";
+    const p=document.createElement("p");p.textContent="Os conteúdos ficam salvos no claude.ai. Entre com a sua conta para carregar.";e.append(h,p);$("#list").append(e);renderPipeline();renderCopy();return;}
+  if(!canWrite) showBanner("Você está vendo o banco no modo leitura. Só quem tem acesso de edição aprova e altera conteúdos.");
+  db.collection("conteudos").onSnapshot(snap=>{
+    items=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+    fillQuadros();render();
+  },err=>{showBanner("A conexão com o banco caiu. Recarregue a página para voltar a sincronizar.");});
+})();
+</script>
