@@ -139,6 +139,31 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
 .ed-body input,.ed-body select,.ed-body textarea{border:1px solid var(--line);border-radius:8px;background:var(--field);padding:10px;font-size:15px;color:var(--ink);width:100%}
 .ed-body textarea{resize:vertical}
 #f-texto{min-height:260px;line-height:1.6}
+
+/* prévia do carrossel (formato 4:5 do Instagram) */
+.deck-label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:12px;color:var(--muted);margin:4px 0 10px}
+.deck{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x mandatory;max-width:100%}
+.slide{flex:0 0 232px;aspect-ratio:4/5;max-width:100%;border-radius:10px;position:relative;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:space-between;padding:18px 18px 14px;background:var(--sl-bg);color:var(--sl-fg);border:1px solid var(--line);
+  --sl-bg:#f5f1e9;--sl-fg:#233c36;--sl-acc:#a16c46}
+.slide.alt{--sl-bg:#233c36;--sl-fg:#ffffff;--sl-acc:#d9be96}
+.slide.photo{--sl-fg:#ffffff;--sl-acc:#e8d2b2;background-size:cover;background-position:center}
+.slide.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,28,26,.15) 0%,rgba(20,28,26,.78) 100%)}
+.slide>*{position:relative}
+.slide .num{font:700 10px var(--sans);letter-spacing:.16em;color:var(--sl-acc);text-transform:uppercase}
+.slide .st{font:20px/1.18 var(--serif);margin:0 0 8px;text-wrap:balance}
+.slide.cover .st{font-size:27px}
+.slide .sb{font-size:12.5px;line-height:1.45;margin:0;white-space:pre-line}
+.slide .ft{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.75;display:flex;justify-content:space-between}
+.copy-area .deck-label{color:var(--panel-muted)}
+.legenda{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14.5px;white-space:pre-line;max-width:68ch;margin:8px 0 0}
+.gallery{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.gallery img{width:120px;height:120px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap}
+.thumb{position:relative;width:92px}
+.thumb img{width:92px;height:115px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block}
+.thumb span{font-size:11px;color:var(--muted)}
+.thumb button{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:12px;background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.upload-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
 .hint{font-size:12px;color:var(--muted)}
 .ed-foot{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--card)}
 .danger{background:transparent;color:var(--s-ajustar);border:1px solid var(--s-ajustar)}
@@ -172,7 +197,7 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
         <div class="btn-row"><button class="primary" id="copy">Copiar texto</button><button class="ghost" id="mark-pub">Marcar como publicado</button></div>
         <p class="status-line" id="copy-status" role="status" aria-live="polite"></p>
       </div>
-      <div><label for="prompt-text">Fala ou texto do post</label><textarea id="prompt-text" readonly spellcheck="false"></textarea></div>
+      <div style="min-width:0"><label for="prompt-text" id="prompt-label">Fala ou texto do post</label><textarea id="prompt-text" readonly spellcheck="false"></textarea><div id="copy-deck"></div></div>
     </div>
   </section>
 
@@ -211,7 +236,12 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
       <label for="f-data">Data de publicação<input id="f-data" type="date"><span class="hint">Deixe em branco para guardar no banco.</span></label>
       <label for="f-horario">Horário<input id="f-horario" placeholder="Ex.: 19h"></label>
       <label class="full" for="f-pauta">Pauta / objetivo<textarea id="f-pauta" rows="2"></textarea></label>
-      <label class="full" for="f-texto">Texto completo (fala ou post)<textarea id="f-texto"></textarea><span class="hint">Uma linha em branco separa cada fala. Trechos entre [colchetes] aparecem destacados como pendência.</span></label>
+      <label class="full" for="f-texto">Texto completo (fala ou post)<textarea id="f-texto"></textarea><span class="hint">Uma linha em branco separa cada fala. Trechos entre [colchetes] aparecem destacados como pendência. No carrossel, separe as lâminas com uma linha só com --- (a primeira linha de cada lâmina vira o título).</span></label>
+      <label class="full" for="f-legenda">Legenda do post (o texto que vai junto do carrossel, vídeo ou imagem)<textarea id="f-legenda" rows="4"></textarea></label>
+      <div class="full" id="img-field"><span class="hint" style="display:block;margin-bottom:6px">Fotos e imagens. No carrossel, a 1ª imagem vira o fundo da lâmina 1, a 2ª da lâmina 2, e assim por diante.</span>
+        <div class="thumbs" id="thumbs"></div>
+        <div class="upload-row"><label for="f-imgs" class="outline" style="display:inline-block;border:1px solid var(--line);border-radius:7px;padding:9px 13px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer">+ Adicionar fotos ou imagens</label><input id="f-imgs" type="file" accept="image/*" multiple hidden><span class="hint" id="img-status"></span></div>
+      </div>
       <label class="full" for="f-material">Link do material (planilha, PDF, vídeo, arte)<input id="f-material" type="url" placeholder="https://"></label>
       <label class="full" for="f-notas">Observações da aprovação<textarea id="f-notas" rows="2" placeholder="Ex.: trocar o exemplo do segundo parágrafo"></textarea></label>
     </div>
@@ -294,7 +324,14 @@ function card(it){
   if(it.pauta||it.formato){const p=document.createElement("p");p.className="pauta";
     if(it.formato){const b=document.createElement("b");b.textContent=it.formato+". ";p.append(b);}
     p.append(document.createTextNode(it.pauta||""));a.append(p);}
-  a.append(storyNode(it.texto));
+  if(isDeck(it)){
+    a.append(deckNode(it));
+    if(it.legenda){const lb=document.createElement("div");lb.className="deck-label";lb.textContent="Legenda do post";const lg=document.createElement("div");lg.className="legenda";lg.textContent=it.legenda;a.append(lb,lg);}
+  } else {
+    a.append(storyNode(it.texto));
+    if(it.legenda){const lb=document.createElement("div");lb.className="deck-label";lb.style.marginTop="16px";lb.textContent="Legenda do post";const lg=document.createElement("div");lg.className="legenda";lg.textContent=it.legenda;a.append(lb,lg);}
+    if((it.imagens||[]).length){const g=document.createElement("div");g.className="gallery";it.imagens.forEach(im=>{const img=document.createElement("img");img.src=imgUrl(im);img.alt=im.nome||"Imagem do conteúdo";img.loading="lazy";g.append(img);});a.append(g);}
+  }
   if(it.notas){const n=document.createElement("div");n.className="note";n.textContent="Observação: "+it.notas;a.append(n);}
   const meta=document.createElement("div");meta.className="meta";
   if(it.material){const l=document.createElement("a");l.href=it.material;l.target="_blank";l.rel="noopener";l.textContent="Abrir material ↗";meta.append(l);}
@@ -349,11 +386,61 @@ function renderCopy(keep){
   if(rows.some(r=>r.id===prev)) sel.value=prev;
   syncCopy();
 }
-function syncCopy(){const it=items.find(i=>i.id===$("#script-select").value);$("#prompt-text").value=it?it.texto||"":"";$("#copy-status").textContent="";
+function syncCopy(){const it=items.find(i=>i.id===$("#script-select").value);
+  const deck=it&&isDeck(it);
+  $("#prompt-label").textContent=deck?"Legenda do post (as lâminas estão na prévia abaixo)":it&&it.legenda?"Fala ou texto · a legenda vem no final":"Fala ou texto do post";
+  $("#prompt-text").value=!it?"":deck?(it.legenda||"[Escreva a legenda deste carrossel em Editar.]"):(it.texto||"")+(it.legenda?"\n\n———\nLegenda:\n"+it.legenda:"");
+  const cd=$("#copy-deck");cd.textContent="";if(deck){cd.style.marginTop="16px";cd.append(deckNode(it));}
+  $("#copy-status").textContent="";
   $("#mark-pub").disabled=!it||it.status!=="aprovado"||!canWrite||!db;}
 function useInCopy(id){const it=items.find(i=>i.id===id);if(it&&it.status!=="aprovado")$("#only-approved").checked=false;renderCopy(id);}
 
 function render(){renderPipeline();renderList();renderCopy();}
+
+/* carrossel e imagens */
+function isDeck(it){return it.tipo==="Carrossel";}
+function imgUrl(im){return im.url&&im.url.startsWith("/_blob/")?im.url:"/_blob/"+im.id;}
+function slidesOf(it){
+  const raw=(it.texto||"").replace(/\r/g,"");
+  const parts=/\n\s*-{3,}\s*\n/.test(raw)?raw.split(/\n\s*-{3,}\s*\n/):raw.split(/\n\s*\n/);
+  return parts.map(s=>s.trim()).filter(Boolean).map(s=>{const [t,...rest]=s.split("\n");return {t:t.trim(),b:rest.join("\n").replace(/\n\s*\n/g,"\n").trim()};});
+}
+function deckNode(it){
+  const wrap=document.createElement("div");
+  const sl=slidesOf(it), imgs=it.imagens||[];
+  const lb=document.createElement("div");lb.className="deck-label";
+  const l1=document.createElement("span");l1.textContent="Prévia do carrossel · "+sl.length+" lâminas · 1080 × 1350";
+  const l2=document.createElement("span");l2.textContent=imgs.length?imgs.length+" com foto":"arraste para o lado →";lb.append(l1,l2);
+  const deck=document.createElement("div");deck.className="deck";deck.setAttribute("role","group");deck.setAttribute("aria-label","Lâminas do carrossel "+(it.titulo||""));
+  sl.forEach((s,i)=>{
+    const d=document.createElement("div");d.className="slide"+(i===0?" cover":"")+(i%2===1?" alt":"");
+    if(imgs[i]){d.classList.add("photo");d.style.backgroundImage=`url("${imgUrl(imgs[i])}")`;}
+    const top=document.createElement("div");const n=document.createElement("div");n.className="num";n.textContent=i===0?(it.quadro||"FQC"):String(i+1).padStart(2,"0");
+    top.append(n);
+    const mid=document.createElement("div");const h=document.createElement("p");h.className="st";h.textContent=s.t;mid.append(h);
+    if(s.b){const b=document.createElement("p");b.className="sb";b.textContent=s.b;mid.append(b);}
+    const ft=document.createElement("div");ft.className="ft";const f1=document.createElement("span");f1.textContent="Finanças que Curam";const f2=document.createElement("span");f2.textContent=(i+1)+"/"+sl.length;ft.append(f1,f2);
+    d.append(top,mid,ft);deck.append(d);
+  });
+  wrap.append(lb,deck);return wrap;
+}
+let assets=null, edImgs=[], edNew=[];
+function renderThumbs(){const box=$("#thumbs");box.textContent="";
+  edImgs.forEach((im,i)=>{const t=document.createElement("div");t.className="thumb";const img=document.createElement("img");img.src=imgUrl(im);img.alt=im.nome||"Imagem";
+    const cap=document.createElement("span");cap.textContent=$("#f-tipo").value==="Carrossel"?"Lâmina "+(i+1):(im.nome||"Imagem").slice(0,14);
+    const x=document.createElement("button");x.type="button";x.textContent="×";x.setAttribute("aria-label","Remover imagem");x.addEventListener("click",()=>{edImgs.splice(i,1);renderThumbs();});
+    t.append(img,x,cap);box.append(t);});}
+$("#f-imgs").addEventListener("change",async ev=>{
+  const files=[...ev.target.files];ev.target.value="";if(!files.length)return;
+  if(!assets){$("#img-status").textContent="Envio de imagens disponível só para quem edita o banco.";return;}
+  for(const f of files){
+    $("#img-status").textContent="Enviando "+f.name+"…";
+    try{const r=await assets.upload(f);const im={id:r.id,url:r.url,nome:f.name};edImgs.push(im);edNew.push(r.id);renderThumbs();}
+    catch(e){$("#img-status").textContent="Não foi possível enviar "+f.name+". Use JPG, PNG ou WEBP de até 20 MB.";return;}
+  }
+  $("#img-status").textContent="Imagens prontas. Clique em Salvar para guardar.";
+});
+$("#f-tipo").addEventListener("change",renderThumbs);
 
 async function write(id,data){
   if(!db) return false;
@@ -380,11 +467,14 @@ function openEditor(it,forceStatus){
   $("#f-titulo").value=it?.titulo||""; $("#f-tipo").value=it?.tipo||"Post"; $("#f-status").value=forceStatus||it?.status||"aguardando";
   $("#f-quadro").value=it?.quadro||""; $("#f-formato").value=it?.formato||""; $("#f-data").value=it?.data||""; $("#f-horario").value=it?.horario||"";
   $("#f-pauta").value=it?.pauta||""; $("#f-texto").value=it?.texto||""; $("#f-material").value=it?.material||""; $("#f-notas").value=it?.notas||"";
+  $("#f-legenda").value=it?.legenda||""; edImgs=(it?.imagens||[]).map(x=>({...x})); edNew=[]; $("#img-status").textContent=""; renderThumbs();
+  $("#img-field").hidden=!assets&&!edImgs.length;
   resetDel(); $("#del-area").hidden=!it;
   if(typeof ed.showModal==="function") ed.showModal(); else ed.setAttribute("open","");
   (forceStatus==="ajustar"?$("#f-notas"):$("#f-titulo")).focus();
 }
-function closeEditor(){if(ed.open)ed.close();editingId=null;}
+function closeEditor(){if(ed.open)ed.close();editingId=null;
+  if(assets&&edNew.length){edNew.forEach(id=>assets.delete(id).catch(()=>{}));} edNew=[];}
 function resetDel(){const a=$("#del-area");a.textContent="";const b=document.createElement("button");b.type="button";b.className="danger";b.textContent="Excluir";b.addEventListener("click",askDel);a.append(b);}
 function askDel(){const a=$("#del-area");a.textContent="";const s=document.createElement("span");s.textContent="Excluir de vez?";
   const y=document.createElement("button");y.type="button";y.className="danger";y.textContent="Sim, excluir";y.addEventListener("click",doDel);
@@ -397,7 +487,7 @@ $("#ed-form").addEventListener("submit",async ev=>{
   const status=$("#f-status").value, now=Date.now();
   const data={titulo,tipo:$("#f-tipo").value,status,quadro:$("#f-quadro").value.trim(),formato:$("#f-formato").value.trim(),data:$("#f-data").value,
     horario:$("#f-horario").value.trim(),pauta:$("#f-pauta").value.trim(),texto:$("#f-texto").value.replace(/\r/g,"").trim(),material:$("#f-material").value.trim(),
-    notas:$("#f-notas").value.trim(),atualizadoEm:now};
+    notas:$("#f-notas").value.trim(),legenda:$("#f-legenda").value.replace(/\r/g,"").trim(),imagens:edImgs.map(x=>({id:x.id,nome:x.nome||""})),atualizadoEm:now};
   const prev=items.find(i=>i.id===editingId);
   if(status==="aprovado"&&prev?.status!=="aprovado") data.aprovadoEm=now;
   if(status==="publicado"&&prev?.status!=="publicado") data.publicadoEm=now;
@@ -405,7 +495,7 @@ $("#ed-form").addEventListener("submit",async ev=>{
   try{
     if(editingId) await db.collection("conteudos").doc(editingId).update(data);
     else {data.criadoEm=now;data.ordem=now;await db.collection("conteudos").doc("n-"+now.toString(36)).set(data);}
-    closeEditor(); toast("Salvo.");
+    edNew=[]; closeEditor(); toast("Salvo.");
   }catch(e){
     if(e&&e.code==="invalid_argument"){canWrite=false;showBanner("Você pode ver o banco, mas não tem permissão para alterar.");closeEditor();render();}
     else if(e&&e.code==="quota_exceeded") toast("O banco chegou ao limite de itens. Exclua conteúdos antigos para incluir novos.");
@@ -434,7 +524,7 @@ function showBanner(msg){const b=$("#banner");b.textContent=msg;b.hidden=false;}
 let downloads=null;
 $("#export").hidden=true;
 $("#export").addEventListener("click",async()=>{
-  const cols=["data","horario","tipo","quadro","formato","status","titulo","pauta","texto","material","notas"];
+  const cols=["data","horario","tipo","quadro","formato","status","titulo","pauta","texto","legenda","material","notas"];
   const esc=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
   const csv="﻿"+cols.join(";")+"\n"+items.slice().sort(sortItems).map(i=>cols.map(c=>esc(c==="status"?statusOf(i.status).l:i[c])).join(";")).join("\n");
   try{await downloads.save({filename:"banco-de-conteudo-fqc.csv",data:new Blob([csv],{type:"text/csv"})});}catch(e){toast("Download cancelado.");}
@@ -445,6 +535,7 @@ function fillQuadros(){const dl=$("#quadros");dl.textContent="";[...new Set(item
 
 (async()=>{
   try{downloads=await window.claude?.use?.("downloads");if(downloads)$("#export").hidden=false;}catch(e){}
+  try{assets=await window.claude?.use?.("assets");}catch(e){assets=null;}
   try{
     const user=await window.claude?.use?.("user");
     if(user){const c=await user.can?.("data.write");if(c===false)canWrite=false;}
