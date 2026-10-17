@@ -1,0 +1,164 @@
+# Manada · Calendário de conteúdo · 19/10 a 31/12/2026
+
+Legenda dos quadros: 📡 Radar da Manada (seg) · 🛠️ Terça Técnica · 💛 Quarta das Emoções · 🎲 Quinta do Jogo · 🏆 Sexta Livre · ☕ Sábado Leve · 🗞️ Resumo de domingo.
+Textos, roteiros das lives, quiz e regras dos desafios estão em [`03-banco-de-conteudos.md`](03-banco-de-conteudos.md).
+Versão em planilha: [`calendario-q4-2026.csv`](calendario-q4-2026.csv) (separador `;`, abre direto no Excel/Google Sheets).
+
+**Marcos do trimestre**
+
+| Data | Marco |
+|---|---|
+| 19/10 | Lançamento: Manifesto + #EuNaManada |
+| 25/10 | 2º turno das eleições (conteúdo apartidário em 26/10) |
+| 28/10 a 03/11 | Desafio Diário de Gastos Emocionais |
+| 30/10 | LIVE #1 |
+| 31/10 | Dia Mundial da Poupança + Halloween |
+| 04/11 e 09/12 | Copom (*confirmar datas no BCB*) |
+| 16/11 a 30/11 | Desafio Black Friday Consciente |
+| 20/11 | Feriado da Consciência Negra |
+| 26/11 | LIVE #2 |
+| 27/11 | Black Friday · Plantão da Manada |
+| 30/11 | 1ª parcela do 13º |
+| 03/12 a 30/12 | Liga da Manada (carteira simulada) |
+| 17/12 | LIVE #3 · Workshop Plano 2027 |
+| 18/12 | 2ª parcela do 13º (prazo legal 20/12 cai no domingo) |
+| 27/12 a 29/12 | Prêmios Manada 2026 |
+| 30/12 | Carta para o eu de 2027 |
+
+## OUTUBRO · Consciência (o que o dinheiro me faz sentir)
+
+
+### Semana 1 · Boas-vindas & Diagnóstico (19/10 a 25/10)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 19/10 Seg | Abertura | Post fixado + vídeo 60s · 19h | **Manifesto da Manada** — Quem somos, por que finanças carregam emoções e as 5 regras do grupo. CTA: comente #EuNaManada com nome, cidade e 1 meta de dinheiro. |
+| 20/10 Ter | Terça Técnica | Carrossel + planilha · 12h | **Raio-X financeiro em 15 minutos** — Receitas, gastos fixos, variáveis, dívidas e reserva em uma folha. CTA: baixe o modelo e poste ✅ quando preencher (sem expor valores). |
+| 21/10 Qua | Quarta das Emoções | Enquete · 19h | **Que emoção o dinheiro te desperta?** — Opções: medo · culpa · ansiedade · euforia · indiferença. Na sequência, texto curto explicando cada uma e como ela aparece no extrato. |
+| 22/10 Qui | Quinta do Jogo | Quiz (6 perguntas) · 20h | **Que lobo financeiro você é?** — Perfis: Lobo Guardião (cauteloso), Lobo Impulsivo, Lobo Estrategista, Lobo Distraído. CTA: poste seu resultado; vira base dos conteúdos seguintes. |
+| 23/10 Sex | Sexta Livre | Thread aberta · 18h | **#VitóriaDaManada nº 1** — Qualquer vitória vale: pagou conta em dia, disse não a uma compra, conversou sobre dinheiro em casa. |
+| 24/10 Sáb | Sábado Leve | Indicação · 10h | **Livro: A Psicologia Financeira (Morgan Housel)** — 3 lições em 3 frases + pergunta: qual livro mudou sua relação com dinheiro? |
+| 25/10 Dom | Radar da Manada | Aviso curto · 20h | **2º turno das eleições** — Lembrete apartidário: amanhã falamos do efeito no bolso, não de candidatos. Regra nº 4 do grupo vale em dobro. |
+
+### Semana 2 · Dinheiro e Emoção (26/10 a 01/11)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 26/10 Seg | Radar da Manada | Card de notícias · 8h | **Eleição e seu bolso: o que muda e o que NÃO muda** — Dólar, Ibovespa e juros futuros após o resultado. Mensagem central: volatilidade de curto prazo não é motivo para mexer no plano de longo prazo. |
+| 27/10 Ter | Terça Técnica | Carrossel · 12h | **Orçamento 50-30-20 adaptado à vida real** — Necessidades / desejos / futuro, e como ajustar quando a renda é variável. CTA: qual seu percentual atual de 'futuro'? |
+| 28/10 Qua | Quarta das Emoções | Lançamento de desafio · 19h | **Desafio Diário de Gastos Emocionais (7 dias)** — Anotar cada gasto com a emoção do momento (tédio, recompensa, estresse, alegria). Check-in diário com emoji até 03/11. |
+| 29/10 Qui | Quinta do Jogo | Verdade ou Mito (5 rodadas) · 20h | **Verdade ou Mito financeiro** — Ex.: 'Poupança é sempre o pior investimento' · 'Cartão de crédito é vilão' · 'Precisa de muito dinheiro para investir'. |
+| 30/10 Sex | LIVE #1 | Live 45 min + Q&A · 20h | **Finanças carregam emoções: o que seu extrato diz sobre você** — Roteiro na seção 'Lives'. Gravação fica fixada 7 dias. |
+| 31/10 Sáb | Data especial | Carrossel temático · 11h | **Dia Mundial da Poupança + Halloween: os monstros do orçamento** — Gastos fantasmas, assinaturas zumbis, juros vampiros, cartão lobisomem. CTA: qual monstro mora no seu orçamento? |
+| 01/11 Dom | Domingo | Resumo semanal · 19h | **O que rolou na Manada** — 3 destaques da semana + agenda de novembro. |
+
+## NOVEMBRO · Técnica & Manobras (como eu decido)
+
+
+### Semana 3 · Reserva e Selic (02/11 a 08/11)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 02/11 Seg | Feriado (Finados) | Texto reflexivo · 10h | **O que o dinheiro deixa** — Conteúdo leve: legado, organização de documentos e conversa em família. Sem pressão de engajamento. |
+| 03/11 Ter | Terça Técnica | Carrossel + simulação · 12h | **Reserva de emergência: quanto, onde e em quanto tempo** — 3 a 6 meses de custo fixo (6–12 para autônomos); Tesouro Selic e CDB de liquidez diária; FGC. Fechamento do Diário de Gastos. |
+| 04/11 Qua | Radar da Manada | Card de notícia · 19h | **Copom e a Selic: o que muda na sua reserva e nas suas dívidas** — Postar após o comunicado (confirmar data no calendário do BCB). Explicar efeito na renda fixa e no crédito. |
+| 05/11 Qui | Quinta do Jogo | Caça ao tesouro · 20h | **Caça às assinaturas zumbis** — Membros abrem a fatura e contam quantas assinaturas esqueceram. Quem cancelar mais posta o 'troféu'. |
+| 06/11 Sex | Sexta Livre | Thread · 18h | **Resultado do Diário de Gastos + #VitóriaDaManada** — Qual emoção mais gastou por você? Compilar respostas em gráfico (anônimo). |
+| 07/11 Sáb | Sábado Leve | Indicação · 10h | **Ferramentas gratuitas: Calculadora do Cidadão (BCB) e simulador do Tesouro Direto** — Mostrar em 1 print cada. |
+| 08/11 Dom | Domingo | Resumo semanal · 19h | **O que rolou na Manada** — Destaques + gráfico do Diário de Gastos. |
+
+### Semana 4 · Dívidas e juros (09/11 a 15/11)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 09/11 Seg | Radar da Manada | Card · 8h | **Agenda da semana: IPCA e o seu custo de vida** — Inflação oficial x 'inflação pessoal': como calcular a sua. |
+| 10/11 Ter | Terça Técnica | Carrossel + planilha · 12h | **Avalanche x Bola de Neve: qual método para sair das dívidas** — Avalanche = maior juro primeiro (técnica); Bola de neve = menor saldo primeiro (emoção/motivação). Quando usar cada um. |
+| 11/11 Qua | Quarta das Emoções | Texto + caixinha anônima · 19h | **Vergonha de dívida: como falar de dinheiro sem culpa** — Formulário anônimo de dúvidas; respostas no sábado. |
+| 12/11 Qui | Quinta do Jogo | Desafio de cálculo · 20h | **Quanto custa o parcelado 'sem juros'?** — 3 ofertas reais (à vista com desconto x 10x). Quem acertar a melhor opção ganha destaque. |
+| 13/11 Sex | Sexta Livre | Meme/enquete · 18h | **Sexta-feira 13: superstições financeiras** — 'Carteira vazia no chão dá azar?' Leve, humor, e fechamento com 1 hábito que realmente dá sorte: automatizar. |
+| 14/11 Sáb | Sábado Leve | Respostas · 10h | **Respondendo a caixinha anônima** — 5 perguntas sobre dívidas, respostas práticas. |
+| 15/11 Dom | Domingo (Proclamação) | Resumo semanal · 19h | **O que rolou + aviso do Desafio Black Friday** — Pré-lançamento: amanhã começa o desafio. |
+
+### Semana 5 · Dados a favor do seu dinheiro (16/11 a 22/11)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 16/11 Seg | Desafio | Lançamento · 8h | **Desafio Black Friday Consciente (16/11 a 30/11)** — Regras: lista de desejos, regra das 72h, teto de gasto definido antes. Check-in diário. |
+| 17/11 Ter | Terça Técnica | Carrossel + dashboard · 12h | **Seus 4 KPIs financeiros pessoais** — Taxa de poupança · Índice de endividamento · Meses de reserva · Custo fixo/renda. Inteligência de resultados aplicada à vida. |
+| 18/11 Qua | Quarta das Emoções | Texto + enquete · 19h | **FOMO e comparação social: o vizinho do Instagram** — Por que a gente compara e 3 manobras para não decidir no impulso. |
+| 19/11 Qui | Quinta do Jogo | Jogo de adivinhação · 20h | **Desconto ou 'metade do dobro'?** — Mostrar preço de 'Black Friday' e o histórico; membros votam se é desconto real. |
+| 20/11 Sex | Feriado (Consciência Negra) | Texto + indicação · 10h | **Educação financeira e desigualdade** — Dados sobre renda e acesso a crédito; indicar criadores e empreendedores negros de finanças. Tom respeitoso e informativo. |
+| 21/11 Sáb | Sábado Leve | Thread · 10h | **Lista de desejos da Manada** — Cada um posta seus 3 itens e o teto de gasto. |
+| 22/11 Dom | Domingo | Resumo semanal · 19h | **O que rolou + agenda da semana Black Friday** — Aviso da Live #2 e do Plantão da Manada. |
+
+### Semana 6 · Black Friday com estratégia (23/11 a 29/11)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 23/11 Seg | Radar da Manada | Card · 8h | **Golpes de Black Friday: 5 sinais de alerta** — Sites falsos, Pix para pessoa física, links por WhatsApp, preço bom demais, pressa artificial. |
+| 24/11 Ter | Terça Técnica | Carrossel · 12h | **Custo por uso: a conta que muda sua compra** — Preço ÷ número de usos esperados. Exercício com 3 itens da lista de desejos. |
+| 25/11 Qua | Quarta das Emoções | Vídeo curto · 19h | **Comprar como recompensa: a dopamina do carrinho** — Como reconhecer, e trocas que dão a mesma sensação sem gastar. |
+| 26/11 Qui | LIVE #2 | Live 45 min + Q&A · 20h | **Black Friday sem ressaca: manobras para comprar com estratégia** — Roteiro na seção 'Lives'. |
+| 27/11 Sex | Plantão da Manada | Thread ao vivo (dia todo) · 9h–22h | **Black Friday: 'vale a pena?'** — Membros postam a oferta, a Manada vota 🟢 compra / 🟡 espera / 🔴 passa. |
+| 28/11 Sáb | Sábado Leve | Check-in · 11h | **Ressaca check** — Quem ficou dentro do teto? Quem passou? Sem julgamento: o que aprendeu? |
+| 29/11 Dom | Domingo | Resumo semanal · 19h | **Placar do Desafio Black Friday** — Total economizado pelo grupo (soma voluntária e anônima). |
+
+## DEZEMBRO · Integração & Colheita (o que eu construo)
+
+
+### Semana 7 · 13º e primeiros investimentos (30/11 a 06/12)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 30/11 Seg | Radar da Manada | Carrossel · 8h | **Caiu o 13º (1ª parcela): o plano dos 4 destinos** — Dívida cara → reserva → objetivo → prazer sem culpa. Encerramento do Desafio Black Friday. |
+| 01/12 Ter | Terça Técnica | Carrossel · 12h | **Começando a investir: renda fixa sem mistério** — Tesouro Direto, CDB, LCI/LCA, liquidez, IR regressivo e FGC. Abertura do mês da Colheita. |
+| 02/12 Qua | Quarta das Emoções | Texto guiado · 19h | **Fazendo as pazes com o seu 2026 financeiro** — 3 perguntas: o que deu certo, o que doeu, o que levo de aprendizado. |
+| 03/12 Qui | Quinta do Jogo | Lançamento de liga · 20h | **Liga da Manada: carteira simulada (03/12 a 30/12)** — Cada time monta carteira fictícia de renda fixa com R$ 10 mil virtuais. Pontua quem justifica melhor e controla risco, não só quem rende mais. |
+| 04/12 Sex | Sexta Livre | Thread · 18h | **#VitóriaDaManada: o que você fez com o 13º?** — Destaque para quem quitou dívida ou começou a reserva. |
+| 05/12 Sáb | Sábado Leve | Indicação · 10h | **Filme: A Grande Aposta** — O que o filme ensina sobre risco, manada e pensar diferente. |
+| 06/12 Dom | Domingo | Resumo semanal · 19h | **O que rolou + placar da Liga** — Ranking parcial. |
+
+### Semana 8 · Sistemas que trabalham por você (07/12 a 13/12)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 07/12 Seg | Radar da Manada | Card · 8h | **Agenda da semana: Copom e IPCA** — Confirmar datas no BCB/IBGE. O que observar. |
+| 08/12 Ter | Terça Técnica | Tutorial + template · 12h | **Monte seu mini sistema financeiro** — Planilha/dashboard com entradas, saídas, metas e os 4 KPIs. Template da Manada para copiar. |
+| 09/12 Qua | Radar da Manada | Card de notícia · 19h | **Última Selic do ano: como fecha 2026 para quem poupa e para quem deve** — Postar após o comunicado do Copom. |
+| 10/12 Qui | Quinta do Jogo | Amigo secreto · 20h | **Amigo Secreto Financeiro** — Sorteio de duplas; cada um 'presenteia' o outro com uma dica, livro ou planilha (custo zero). |
+| 11/12 Sex | Sexta Livre | Thread · 18h | **#VitóriaDaManada + quem automatizou alguma coisa?** — Débito automático para investimento, alerta de gastos etc. |
+| 12/12 Sáb | Sábado Leve | Enquete · 10h | **Festas de fim de ano: qual gasto mais te preocupa?** — Presentes · ceia · viagem · roupas · nenhum. |
+| 13/12 Dom | Domingo | Resumo semanal · 19h | **O que rolou + aviso da Live #3** — Workshop Plano 2027. |
+
+### Semana 9 · Plano 2027 (14/12 a 20/12)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 14/12 Seg | Radar da Manada | Carrossel · 8h | **Orçamento de festas em 3 passos** — Teto total → divisão por categoria → pagamento à vista ou com data de quitação definida. |
+| 15/12 Ter | Terça Técnica | Carrossel + modelo · 12h | **Metas 2027 com OKR pessoal** — 1 objetivo financeiro + 3 resultados-chave mensuráveis. Exemplo completo. |
+| 16/12 Qua | Quarta das Emoções | Texto + áudio · 19h | **Ansiedade de fim de ano e dinheiro** — Respiração, limites com a família, como dizer não sem culpa. |
+| 17/12 Qui | LIVE #3 | Workshop 60 min · 20h | **Plano 2027: da emoção à estratégia** — Todo mundo sai com o plano preenchido. Roteiro na seção 'Lives'. |
+| 18/12 Sex | Radar da Manada | Card · 8h | **2ª parcela do 13º (prazo 20/12 cai no domingo)** — Revisar o plano dos 4 destinos e pagar IR/INSS na conta. |
+| 19/12 Sáb | Sábado Leve | Thread · 10h | **Mural dos planos 2027** — Quem quiser compartilha seu objetivo principal (sem valores). |
+| 20/12 Dom | Domingo | Resumo semanal · 19h | **O que rolou + programação de festas** — Ritmo reduzido até o Natal. |
+
+### Semana 10 · Gratidão (ritmo reduzido) (21/12 a 27/12)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 21/12 Seg | Retrospectiva | Carrossel com dados · 12h | **Retrospectiva da Manada 2026 em números** — Membros, posts, desafios concluídos, valor economizado no Desafio BF, emoção mais votada. |
+| 22/12 Ter | Terça Técnica | Lista rápida · 12h | **Presentes sem dívida: 7 ideias** — Experiências, feitos à mão, amigo secreto com teto, presente coletivo. |
+| 23/12 Qua | Quarta das Emoções | Thread · 19h | **Gratidão: quem te ajudou com dinheiro este ano?** — Marcar a pessoa ou contar a história. |
+| 24/12 Qui | Data especial | Mensagem curta · 11h | **Mensagem de Natal da Manada** — Texto ou vídeo da fundadora. Sem CTA. |
+| 25/12 Sex | Natal | — · — | **Sem post (descanso)** — Comunidade saudável também descansa. |
+| 26/12 Sáb | Sábado Leve | Enquete · 11h | **Ceia: ficou dentro do orçamento?** — Sim · quase · passou longe 😅 |
+| 27/12 Dom | Domingo | Votação · 19h | **Abertura da votação: Prêmios Manada 2026** — Categorias na seção 'Prêmios'. Votação até 29/12. |
+
+### Semana 11 · Fechamento e Prêmios (28/12 a 31/12)
+
+| Data | Quadro | Formato · Hora | Conteúdo |
+|---|---|---|---|
+| 28/12 Seg | Prêmios | Post de votação · 12h | **Últimos dias para votar nos Prêmios Manada** — Lembrete + destaque de indicados. |
+| 29/12 Ter | Prêmios | Post + vídeo · 20h | **Resultado: Prêmios Manada 2026** — Anunciar vencedores e o campeão da Liga (encerra 30/12; anunciar parcial e confirmar dia 30). |
+| 30/12 Qua | Quarta das Emoções | Cápsula do tempo · 19h | **Carta para o eu de dezembro de 2027** — Cada membro escreve uma carta (privada ou no grupo). Reabrimos em dez/2027. Fechamento da Liga da Manada. |
+| 31/12 Qui | Data especial | Mensagem + CTA · 11h | **Réveillon: a primeira tarefa de 2027** — Agendar hoje a transferência automática do dia 5 de janeiro para a reserva. |
