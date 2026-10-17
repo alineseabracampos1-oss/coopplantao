@@ -164,6 +164,25 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
 .thumb span{font-size:11px;color:var(--muted)}
 .thumb button{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:12px;background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .upload-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+
+/* banco de fotos */
+.fotos-head{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:end;margin-bottom:16px}
+.fotos-head h2{font:30px var(--serif);margin:4px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chips button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:50px;padding:6px 13px;font-weight:600;font-size:12.5px}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chips b{font-weight:400;opacity:.7;margin-left:4px;font-variant-numeric:tabular-nums}
+.foto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.foto{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.foto img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:var(--line)}
+.foto figcaption{padding:10px 12px 12px;font-size:12px;color:var(--muted);display:grid;gap:4px}
+.foto figcaption strong{color:var(--ink);font-size:13px;font-weight:600}
+.foto figcaption a{color:var(--accent)}
+.foto .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-top:10px;max-height:300px;overflow:auto}
+.pick-grid button{padding:0;border:2px solid transparent;background:none;border-radius:6px;overflow:hidden}
+.pick-grid button[aria-pressed="true"]{border-color:var(--s-aprovado)}
+.pick-grid img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
 .hint{font-size:12px;color:var(--muted)}
 .ed-foot{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--card)}
 .danger{background:transparent;color:var(--s-ajustar);border:1px solid var(--s-ajustar)}
@@ -206,9 +225,10 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
       <button role="tab" id="tab-cal" aria-selected="true" data-view="cal">Calendário</button>
       <button role="tab" id="tab-banco" aria-selected="false" data-view="banco">Banco (sem data)</button>
       <button role="tab" id="tab-todos" aria-selected="false" data-view="todos">Todos</button>
+      <button role="tab" id="tab-fotos" aria-selected="false" data-view="fotos">Banco de fotos</button>
     </div>
-    <label class="field" for="flt-tipo">Tipo<select id="flt-tipo"><option value="">Todos os tipos</option></select></label>
-    <label class="field" for="flt-mes">Mês<select id="flt-mes"><option value="">Todos</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select></label>
+    <label class="field only-cont" for="flt-tipo">Tipo<select id="flt-tipo"><option value="">Todos os tipos</option></select></label>
+    <label class="field only-cont" for="flt-mes">Mês<select id="flt-mes"><option value="">Todos</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select></label>
     <label class="field grow" for="flt-busca">Buscar<input id="flt-busca" type="search" placeholder="Título, texto ou quadro"></label>
     <button class="outline" id="export">Baixar planilha</button>
     <button class="new-btn" id="new">+ Novo conteúdo</button>
@@ -220,6 +240,20 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
     <aside><div class="eyebrow">Nesta seleção</div><h2 id="nav-title">Encontre um conteúdo</h2><nav id="nav" aria-label="Índice"></nav></aside>
     <div id="list"><div class="empty"><h3>Carregando o banco de conteúdo…</h3><p>Os roteiros, posts e materiais do FQC aparecem aqui em instantes.</p></div></div>
   </div>
+
+  <section id="fotos" hidden aria-labelledby="fotos-title">
+    <div class="fotos-head">
+      <div><span class="eyebrow">Banco de fotos</span><h2 id="fotos-title">Imagens para os seus conteúdos</h2>
+        <p class="pauta" style="margin:0">Fotos com licença livre para uso comercial (CC0). Não é obrigatório dar crédito, mas cada foto mostra o autor e a origem. Para usar, abra um conteúdo em Editar e clique em “Escolher do banco de fotos”.</p></div>
+      <div class="upload-row" id="foto-up" hidden>
+        <label class="field" for="up-tema">Tema da nova foto<select id="up-tema"></select></label>
+        <label for="up-file" class="outline" style="display:inline-block;border:1px solid var(--line);border-radius:7px;padding:9px 13px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;align-self:end">+ Enviar foto ao banco</label><input id="up-file" type="file" accept="image/*" multiple hidden>
+      </div>
+    </div>
+    <div class="chips" id="tema-chips" role="group" aria-label="Filtrar por tema"></div>
+    <p class="hint" id="up-status" role="status" aria-live="polite"></p>
+    <div class="foto-grid" id="foto-grid"><div class="empty"><h3>Carregando fotos…</h3></div></div>
+  </section>
 
   <footer><span>Finanças que Curam · Por Aline Seabra</span><span>Organize o dinheiro sem ignorar o que você sente.</span></footer>
 </main>
@@ -240,6 +274,11 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
       <label class="full" for="f-legenda">Legenda do post (o texto que vai junto do carrossel, vídeo ou imagem)<textarea id="f-legenda" rows="4"></textarea></label>
       <div class="full" id="img-field"><span class="hint" style="display:block;margin-bottom:6px">Fotos e imagens. No carrossel, a 1ª imagem vira o fundo da lâmina 1, a 2ª da lâmina 2, e assim por diante.</span>
         <div class="thumbs" id="thumbs"></div>
+        <div class="upload-row"><button type="button" class="outline" id="pick-open">Escolher do banco de fotos</button></div>
+        <div id="picker" hidden>
+          <label class="field" for="pick-tema" style="max-width:280px;margin-top:10px">Tema<select id="pick-tema"></select></label>
+          <div class="pick-grid" id="pick-grid"></div>
+        </div>
         <div class="upload-row"><label for="f-imgs" class="outline" style="display:inline-block;border:1px solid var(--line);border-radius:7px;padding:9px 13px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer">+ Adicionar fotos ou imagens</label><input id="f-imgs" type="file" accept="image/*" multiple hidden><span class="hint" id="img-status"></span></div>
       </div>
       <label class="full" for="f-material">Link do material (planilha, PDF, vídeo, arte)<input id="f-material" type="url" placeholder="https://"></label>
@@ -395,7 +434,68 @@ function syncCopy(){const it=items.find(i=>i.id===$("#script-select").value);
   $("#mark-pub").disabled=!it||it.status!=="aprovado"||!canWrite||!db;}
 function useInCopy(id){const it=items.find(i=>i.id===id);if(it&&it.status!=="aprovado")$("#only-approved").checked=false;renderCopy(id);}
 
-function render(){renderPipeline();renderList();renderCopy();}
+function render(){
+  const f=view==="fotos";
+  $("#fotos").hidden=!f; document.querySelector(".layout").hidden=f; $("#pipeline").hidden=f;
+  document.querySelectorAll(".only-cont").forEach(e=>e.hidden=f);
+  $("#flt-busca").placeholder=f?"Buscar foto (ex.: família, moedas)":"Título, texto ou quadro";
+  if(f) renderFotos(); else {renderPipeline();renderList();}
+  renderCopy();
+}
+
+/* banco de fotos */
+let fotos=[], temaSel="";
+const fotoUrl=f=>"/_blob/"+f.assetId;
+function temas(){return [...new Set(fotos.map(f=>f.tema).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt"));}
+function renderFotos(){
+  const chips=$("#tema-chips");chips.textContent="";
+  [["",`Todas`,fotos.length],...temas().map(t=>[t,t,fotos.filter(f=>f.tema===t).length])].forEach(([v,l,n])=>{
+    const b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed",String(temaSel===v));b.append(document.createTextNode(l));
+    const c=document.createElement("b");c.textContent=n;b.append(c);b.addEventListener("click",()=>{temaSel=v;renderFotos();});chips.append(b);});
+  const q=$("#flt-busca").value.trim().toLowerCase();
+  const rows=fotos.filter(f=>(!temaSel||f.tema===temaSel)&&(!q||((f.titulo||"")+" "+(f.tema||"")+" "+(f.busca||"")).toLowerCase().includes(q)));
+  const g=$("#foto-grid");g.textContent="";
+  if(!rows.length){const e=document.createElement("div");e.className="empty";const h=document.createElement("h3");h.textContent=fotos.length?"Nenhuma foto neste filtro":"O banco de fotos está vazio";e.append(h);g.append(e);return;}
+  rows.forEach(f=>{
+    const fig=document.createElement("figure");fig.className="foto";
+    const img=document.createElement("img");img.src=fotoUrl(f);img.alt=f.titulo||f.tema||"Foto";img.loading="lazy";
+    const cap=document.createElement("figcaption");
+    const tg=document.createElement("span");tg.className="tag";tg.textContent=f.tema||"";
+    const st=document.createElement("strong");st.textContent=f.titulo||"Sem título";
+    const cr=document.createElement("span");cr.append(document.createTextNode((f.autor?"Foto: "+f.autor+" · ":"")+(f.fonte||"Enviada por você")+(f.licenca?" · "+f.licenca:"")));
+    if(f.pagina){cr.append(document.createTextNode(" · "));const a=document.createElement("a");a.href=f.pagina;a.target="_blank";a.rel="noopener";a.textContent="origem ↗";cr.append(a);}
+    cap.append(tg,st,cr);fig.append(img,cap);g.append(fig);
+  });
+}
+function fillTemaSelects(){
+  const ts=temas();
+  [["#pick-tema",true],["#up-tema",false]].forEach(([s,all])=>{const sel=$(s),prev=sel.value;sel.textContent="";
+    if(all){const o=document.createElement("option");o.value="";o.textContent="Todos os temas";sel.append(o);}
+    (ts.length?ts:["Outros"]).forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;sel.append(o);});
+    if([...sel.options].some(o=>o.value===prev))sel.value=prev;});
+}
+function renderPicker(){
+  const t=$("#pick-tema").value,g=$("#pick-grid");g.textContent="";
+  fotos.filter(f=>!t||f.tema===t).forEach(f=>{
+    const b=document.createElement("button");b.type="button";const on=edImgs.some(x=>x.id===f.assetId);b.setAttribute("aria-pressed",String(on));
+    b.setAttribute("aria-label",(on?"Remover ":"Usar ")+(f.titulo||"foto"));
+    const img=document.createElement("img");img.src=fotoUrl(f);img.alt="";img.loading="lazy";b.append(img);
+    b.addEventListener("click",()=>{const i=edImgs.findIndex(x=>x.id===f.assetId);if(i>=0)edImgs.splice(i,1);else edImgs.push({id:f.assetId,nome:f.titulo||""});renderThumbs();renderPicker();});
+    g.append(b);});
+  if(!g.childNodes.length){const p=document.createElement("p");p.className="hint";p.textContent="Nenhuma foto no banco ainda.";g.append(p);}
+}
+$("#pick-open").addEventListener("click",()=>{const p=$("#picker");p.hidden=!p.hidden;if(!p.hidden)renderPicker();});
+$("#pick-tema").addEventListener("change",renderPicker);
+$("#up-file").addEventListener("change",async ev=>{
+  const files=[...ev.target.files];ev.target.value="";if(!files.length||!assets||!db)return;
+  for(const f of files){
+    $("#up-status").textContent="Enviando "+f.name+"…";
+    try{const r=await assets.upload(f);
+      await db.collection("fotos").doc("u-"+r.id).set({assetId:r.id,tema:$("#up-tema").value||"Outros",titulo:f.name.replace(/\.[^.]+$/,""),autor:"",fonte:"Enviada por você",licenca:"",pagina:"",criadoEm:Date.now()});
+    }catch(e){$("#up-status").textContent="Não foi possível enviar "+f.name+". Use JPG, PNG ou WEBP de até 20 MB.";return;}
+  }
+  $("#up-status").textContent="Fotos adicionadas ao banco.";
+});
 
 /* carrossel e imagens */
 function isDeck(it){return it.tipo==="Carrossel";}
@@ -468,7 +568,7 @@ function openEditor(it,forceStatus){
   $("#f-quadro").value=it?.quadro||""; $("#f-formato").value=it?.formato||""; $("#f-data").value=it?.data||""; $("#f-horario").value=it?.horario||"";
   $("#f-pauta").value=it?.pauta||""; $("#f-texto").value=it?.texto||""; $("#f-material").value=it?.material||""; $("#f-notas").value=it?.notas||"";
   $("#f-legenda").value=it?.legenda||""; edImgs=(it?.imagens||[]).map(x=>({...x})); edNew=[]; $("#img-status").textContent=""; renderThumbs();
-  $("#img-field").hidden=!assets&&!edImgs.length;
+  $("#img-field").hidden=!assets&&!edImgs.length&&!fotos.length; $("#picker").hidden=true;
   resetDel(); $("#del-area").hidden=!it;
   if(typeof ed.showModal==="function") ed.showModal(); else ed.setAttribute("open","");
   (forceStatus==="ajustar"?$("#f-notas"):$("#f-titulo")).focus();
@@ -545,6 +645,11 @@ function fillQuadros(){const dl=$("#quadros");dl.textContent="";[...new Set(item
     $("#list").textContent="";const e=document.createElement("div");e.className="empty";const h=document.createElement("h3");h.textContent="Banco indisponível nesta visualização";
     const p=document.createElement("p");p.textContent="Os conteúdos ficam salvos no claude.ai. Entre com a sua conta para carregar.";e.append(h,p);$("#list").append(e);renderPipeline();renderCopy();return;}
   if(!canWrite) showBanner("Você está vendo o banco no modo leitura. Só quem tem acesso de edição aprova e altera conteúdos.");
+  if(assets&&canWrite) $("#foto-up").hidden=false;
+  db.collection("fotos").onSnapshot(snap=>{
+    fotos=snap.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>(a.tema||"").localeCompare(b.tema||"","pt")||(a.ordem||0)-(b.ordem||0));
+    fillTemaSelects(); if(view==="fotos") renderFotos(); if(!$("#picker").hidden) renderPicker();
+  },()=>{});
   db.collection("conteudos").onSnapshot(snap=>{
     items=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
     fillQuadros();render();
