@@ -164,6 +164,9 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
 .thumb span{font-size:11px;color:var(--muted)}
 .thumb button{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:12px;background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .upload-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+a.wa{display:inline-flex;align-items:center;border-radius:7px;padding:10px 14px;font-size:13px;font-weight:600;text-decoration:none}
+a.outline.wa{border:1px solid #25a366;color:var(--ink)}
+a.ghost.wa{border:1px solid #25a366;color:var(--panel-fg)}
 
 /* banco de fotos */
 .fotos-head{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:end;margin-bottom:16px}
@@ -214,6 +217,7 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
         <select id="script-select"></select>
         <label class="check" for="only-approved"><input type="checkbox" id="only-approved" checked> Mostrar só os aprovados</label>
         <div class="btn-row"><button class="primary" id="copy">Copiar texto</button><button class="ghost" id="mark-pub">Marcar como publicado</button></div>
+        <div class="btn-row" style="margin-top:8px"><a class="ghost wa" id="copy-wa" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a><button class="ghost" id="copy-png" hidden>Baixar lâminas (PNG)</button></div>
         <p class="status-line" id="copy-status" role="status" aria-live="polite"></p>
       </div>
       <div style="min-width:0"><label for="prompt-text" id="prompt-label">Fala ou texto do post</label><textarea id="prompt-text" readonly spellcheck="false"></textarea><div id="copy-deck"></div></div>
@@ -292,6 +296,7 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
 </dialog>
 <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 const STATUS = [
   {k:"ideia", l:"Ideia", d:"no banco"},
@@ -386,6 +391,8 @@ function card(it){
   if(it.status==="publicado"||it.status==="aprovado") btn("Voltar para revisão","outline",()=>setStatus(it,"aguardando"),ro);
   btn("Editar","outline",()=>openEditor(it),ro);
   btn("Usar na área de publicação ↑","outline",()=>{useInCopy(it.id);$("#gravacao").scrollIntoView();});
+  const wa=document.createElement("a");wa.className="outline wa";wa.textContent="Enviar no WhatsApp";wa.href=waLink(it);wa.target="_blank";wa.rel="noopener";act.append(wa);
+  if(isDeck(it)&&downloads) btn("Baixar lâminas (PNG)","outline",ev=>exportDeck(it,ev.currentTarget));
   a.append(act);
   return a;
 }
@@ -431,7 +438,47 @@ function syncCopy(){const it=items.find(i=>i.id===$("#script-select").value);
   $("#prompt-text").value=!it?"":deck?(it.legenda||"[Escreva a legenda deste carrossel em Editar.]"):(it.texto||"")+(it.legenda?"\n\n———\nLegenda:\n"+it.legenda:"");
   const cd=$("#copy-deck");cd.textContent="";if(deck){cd.style.marginTop="16px";cd.append(deckNode(it));}
   $("#copy-status").textContent="";
-  $("#mark-pub").disabled=!it||it.status!=="aprovado"||!canWrite||!db;}
+  $("#mark-pub").disabled=!it||it.status!=="aprovado"||!canWrite||!db;
+  $("#copy-wa").href=it?waLink(it):"#"; $("#copy-png").hidden=!(deck&&downloads);}
+
+/* publicação: WhatsApp e exportação das lâminas */
+function postText(it){return isDeck(it)?(it.legenda||it.titulo||""):[it.texto,it.legenda].filter(Boolean).join("\n\n");}
+function waLink(it){return "https://wa.me/?text="+encodeURIComponent(postText(it).slice(0,3500));}
+function wrapLines(ctx,text,maxW){const out=[];text.split("\n").forEach(par=>{let line="";par.split(/\s+/).forEach(w=>{const t=line?line+" "+w:w;if(ctx.measureText(t).width>maxW&&line){out.push(line);line=w;}else line=t;});out.push(line);});return out;}
+async function slidePNG(it,s,i,total,im){
+  const W=1080,H=1350,P=88,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  const alt=i%2===1, photo=!!im;
+  let fg="#233c36",acc="#a16c46";x.fillStyle="#f5f1e9";
+  if(alt){x.fillStyle="#233c36";fg="#ffffff";acc="#d9be96";}
+  x.fillRect(0,0,W,H);
+  if(photo){fg="#ffffff";acc="#e8d2b2";const r=Math.max(W/im.naturalWidth,H/im.naturalHeight),w=im.naturalWidth*r,h=im.naturalHeight*r;x.drawImage(im,(W-w)/2,(H-h)/2,w,h);
+    const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"rgba(20,28,26,.18)");g.addColorStop(1,"rgba(20,28,26,.82)");x.fillStyle=g;x.fillRect(0,0,W,H);}
+  x.textBaseline="top";x.fillStyle=acc;x.font="bold 30px Arial, sans-serif";
+  x.fillText((i===0?(it.quadro||"FQC"):String(i+1).padStart(2,"0")).toUpperCase(),P,P);
+  const tSize=i===0?96:72;x.font=`${tSize}px Georgia, serif`;const tl=wrapLines(x,s.t,W-2*P);
+  x.font="40px Arial, sans-serif";const bl=s.b?wrapLines(x,s.b,W-2*P):[];
+  const tH=tl.length*tSize*1.15, bH=bl.length?24+bl.length*40*1.45:0;let y=Math.max(P+80,(H-tH-bH)/2);
+  x.fillStyle=fg;x.font=`${tSize}px Georgia, serif`;tl.forEach(l=>{x.fillText(l,P,y);y+=tSize*1.15;});
+  if(bl.length){y+=24;x.font="40px Arial, sans-serif";x.globalAlpha=.92;bl.forEach(l=>{x.fillText(l,P,y);y+=40*1.45;});x.globalAlpha=1;}
+  x.font="26px Arial, sans-serif";x.globalAlpha=.8;x.fillText("FINANÇAS QUE CURAM",P,H-P-26);const n=(i+1)+"/"+total;x.fillText(n,W-P-x.measureText(n).width,H-P-26);x.globalAlpha=1;
+  return await new Promise(r=>c.toBlob(r,"image/png"));
+}
+async function exportDeck(it,btnEl){
+  if(!downloads||!window.JSZip){toast("Download indisponível nesta visualização.");return;}
+  const old=btnEl&&btnEl.textContent;if(btnEl){btnEl.disabled=true;btnEl.textContent="Gerando imagens…";}
+  try{
+    const sl=slidesOf(it),imgs=it.imagens||[],zip=new JSZip();
+    for(let i=0;i<sl.length;i++){
+      let im=null;if(imgs[i]){im=new Image();im.src=imgUrl(imgs[i]);try{await im.decode();}catch(e){im=null;}}
+      zip.file(`lamina-${String(i+1).padStart(2,"0")}.png`,await slidePNG(it,sl[i],i,sl.length,im));
+    }
+    if(it.legenda) zip.file("legenda.txt",it.legenda);
+    const name=(it.data?it.data+"-":"")+(it.titulo||"carrossel").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-zA-Z0-9]+/g,"-").toLowerCase().slice(0,50);
+    await downloads.save({filename:name+".zip",data:await zip.generateAsync({type:"blob"})});
+    toast("Lâminas prontas. Abra o .zip e publique as imagens na ordem.");
+  }catch(e){toast("Download cancelado ou não concluído.");}
+  finally{if(btnEl){btnEl.disabled=false;btnEl.textContent=old;}}
+}
 function useInCopy(id){const it=items.find(i=>i.id===id);if(it&&it.status!=="aprovado")$("#only-approved").checked=false;renderCopy(id);}
 
 function render(){
@@ -615,6 +662,7 @@ $("#copy").addEventListener("click",async()=>{const f=$("#prompt-text"),t=f.valu
   try{await navigator.clipboard.writeText(t);ok=true;}catch(e){}
   if(!ok){f.focus();f.select();try{ok=document.execCommand("copy");}catch(e){}}
   $("#copy-status").textContent=ok?"Texto copiado. Agora é só colar no grupo ou no teleprompter.":"Texto selecionado. Use Ctrl+C ou ⌘C para copiar.";});
+$("#copy-png").addEventListener("click",ev=>{const it=items.find(i=>i.id===$("#script-select").value);if(it)exportDeck(it,ev.currentTarget);});
 $("#mark-pub").addEventListener("click",()=>{const it=items.find(i=>i.id===$("#script-select").value);if(it)setStatus(it,"publicado");});
 fillSelect($("#f-tipo"),TIPOS.map(t=>[t,t]));fillSelect($("#f-status"),STATUS.map(s=>[s.k,s.l]));
 TIPOS.forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;$("#flt-tipo").append(o);});
