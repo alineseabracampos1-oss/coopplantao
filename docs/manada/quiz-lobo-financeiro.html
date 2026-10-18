@@ -1,0 +1,187 @@
+<title>Que lobo financeiro você é?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: uma pergunta por tela, cartão central estreito; o resultado vira um cartão 4:5 pronto para print, no padrão das lâminas FQC */
+:root{
+  --paper:#f5f1e9; --card:#fffdf9; --ink:#233c36; --muted:#637069; --line:#dcded3; --accent:#a16c46; --sage:#597567;
+  --deep:#233c36; --deep-fg:#ffffff; --deep-muted:#cbd8d1; --sand:#e8d2b2; --sel:#efe6d8;
+  --serif:Georgia,"Times New Roman",serif; --sans:Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141c1a; --card:#1b2522; --ink:#e9e4d8; --muted:#a2ada6; --line:#2f3b37; --accent:#d29d72; --sage:#9dbba9;
+  --deep:#0e1513; --deep-fg:#f3efe6; --deep-muted:#a9b8b0; --sand:#e8d2b2; --sel:#26332f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141c1a; --card:#1b2522; --ink:#e9e4d8; --muted:#a2ada6; --line:#2f3b37; --accent:#d29d72; --sage:#9dbba9;
+  --deep:#0e1513; --deep-fg:#f3efe6; --deep-muted:#a9b8b0; --sand:#e8d2b2; --sel:#26332f; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+button,a{font:inherit}
+:focus-visible{outline:3px solid #ba895a;outline-offset:3px}
+.wrap{max-width:620px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px}
+.brand b{font:20px var(--serif);font-weight:normal}
+.brand span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--accent)}
+h1{font:clamp(34px,8vw,52px)/1.06 var(--serif);letter-spacing:-.03em;margin:26px 0 14px;text-wrap:balance}
+h1 em{font-weight:normal;color:var(--sage)}
+.lead{color:var(--muted);font-size:17px;margin:0 0 26px;max-width:46ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;padding:15px 22px;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none}
+.btn.main{background:var(--deep);color:var(--deep-fg)}
+.btn.soft{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.wa{background:transparent;color:var(--ink);border:1.5px solid #25a366}
+.meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:13px;color:var(--muted)}
+
+/* pergunta */
+.progress{display:flex;gap:6px;margin:26px 0 8px}
+.progress i{flex:1;height:4px;border-radius:4px;background:var(--line)}
+.progress i.on{background:var(--accent)}
+.qcount{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.q{font:clamp(26px,6vw,34px)/1.18 var(--serif);margin:14px 0 22px;text-wrap:balance}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 16px;cursor:pointer;font-size:16px;line-height:1.4}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed="true"]{background:var(--sel);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt .k{flex:0 0 28px;height:28px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--accent)}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.link{background:none;border:0;color:var(--muted);cursor:pointer;padding:8px 0;font-size:14px}
+
+/* resultado */
+.result{display:grid;gap:22px;margin-top:22px}
+.poster{aspect-ratio:4/5;max-width:100%;background:var(--deep);color:var(--deep-fg);border-radius:16px;padding:28px 26px 22px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.poster::after{content:"";position:absolute;right:-60px;bottom:-60px;width:240px;height:240px;border-radius:50%;border:1px solid rgba(232,210,178,.25)}
+.poster .eyebrow{color:var(--sand)}
+.poster h2{font:clamp(38px,10vw,56px)/1.02 var(--serif);margin:10px 0 12px;letter-spacing:-.02em}
+.poster .tag{font:italic 19px/1.4 var(--serif);color:var(--sand);margin:0;max-width:30ch}
+.bars{display:grid;gap:7px;margin-top:18px;position:relative;z-index:1}
+.bar{display:grid;grid-template-columns:96px 1fr 20px;gap:10px;align-items:center;font-size:12px;color:var(--deep-muted)}
+.bar div{height:6px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden}
+.bar div span{display:block;height:100%;background:var(--sand)}
+.bar b{font-weight:700;color:var(--deep-fg);font-variant-numeric:tabular-nums;text-align:right}
+.poster footer{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep-muted);position:relative;z-index:1}
+.block{border-top:1px solid var(--line);padding-top:16px}
+.block h3{margin:0 0 6px;font:21px var(--serif)}
+.block p{margin:0;max-width:60ch}
+.manobra{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:16px 18px}
+.manobra p{margin:6px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.status{min-height:20px;font-size:13px;color:var(--accent)}
+.note{font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.screen{animation:in .28s ease-out}@keyframes in{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}}
+</style>
+
+<div class="wrap">
+  <div class="brand"><b>Finanças que Curam</b><span>Comunidade Manada · Grupo FQC</span></div>
+
+  <section class="screen" id="intro">
+    <h1>Que lobo financeiro<br><em>você é?</em></h1>
+    <p class="lead">Seis perguntas rápidas sobre como você sente e decide com dinheiro. Não existe resultado bom ou ruim: existe ponto de partida.</p>
+    <button class="btn main" id="start" type="button">Começar o quiz</button>
+    <div class="meta"><span>6 perguntas</span><span>Cerca de 2 minutos</span><span>Nada fica salvo</span></div>
+  </section>
+
+  <section class="screen" id="quiz" hidden aria-live="polite">
+    <div class="progress" id="progress" aria-hidden="true"></div>
+    <div class="qcount" id="qcount"></div>
+    <h2 class="q" id="q"></h2>
+    <div class="opts" id="opts" role="group" aria-labelledby="q"></div>
+    <div class="nav"><button class="link" id="back" type="button">← Voltar</button><span class="note">Escolha a opção mais parecida com você hoje.</span></div>
+  </section>
+
+  <section class="screen" id="res" hidden>
+    <div class="result">
+      <div class="poster" id="poster">
+        <div>
+          <div class="eyebrow">Meu resultado no quiz da Manada</div>
+          <h2 id="r-name"></h2>
+          <p class="tag" id="r-tag"></p>
+          <div class="bars" id="r-bars"></div>
+        </div>
+        <footer><span>Finanças que Curam</span><span>#EuNaManada</span></footer>
+      </div>
+      <div class="block"><h3>Como você lida com dinheiro</h3><p id="r-desc"></p></div>
+      <div class="block"><h3>Sua força</h3><p id="r-forca"></p></div>
+      <div class="block"><h3>Seu ponto de atenção</h3><p id="r-cuidado"></p></div>
+      <div class="manobra"><div class="eyebrow">Sua manobra</div><p id="r-manobra"></p></div>
+      <div class="block"><h3>Primeiro passo nesta semana</h3><p id="r-passo"></p></div>
+      <div class="actions">
+        <button class="btn main" id="copy" type="button">Copiar resultado</button>
+        <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+        <button class="btn soft" id="again" type="button">Refazer</button>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <p class="note">Dica: tire um print do cartão acima e poste no grupo com #EuNaManada.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const Q=[
+ {q:"Caiu um dinheiro extra inesperado. Você…",o:[["A","Guarda tudo na hora."],["B","Já sabe onde vai gastar."],["C","Divide entre meta, reserva e um prazer."],["D","Nem percebe para onde foi."]]},
+ {q:"Ao abrir a fatura do cartão, você sente…",o:[["A","Alívio. Você sempre confere."],["B","Frio na barriga."],["C","Normal. Você já acompanhou durante o mês."],["D","Você nem abre. Só paga."]]},
+ {q:"Aparece uma promoção “só hoje”.",o:[["A","Ignora."],["B","Compra antes que acabe."],["C","Confere o histórico de preço e se estava na sua lista."],["D","Salva e esquece."]]},
+ {q:"Sobre investir:",o:[["A","Poupança ou nada. Tenho medo de perder."],["B","Já entrei em coisa da moda."],["C","Tenho um plano, mesmo que simples."],["D","Nunca parei para pensar."]]},
+ {q:"O seu controle financeiro é…",o:[["A","Caderno ou planilha bem detalhada."],["B","Vejo no app do banco quando lembro."],["C","Planilha ou app com metas e revisão."],["D","Não tenho controle."]]},
+ {q:"Quando pensa no seu futuro financeiro, a emoção é…",o:[["A","Medo."],["B","Empolgação."],["C","Confiança."],["D","Indiferença."]]},
+];
+const P={
+ A:{name:"Lobo Guardião",tag:"Protege a Manada. Às vezes, protege demais.",
+    desc:"Você é cuidadosa com cada real e raramente se descontrola. O dinheiro está seguro, mas parado. Por trás de tanto cuidado costuma existir medo de faltar ou de errar.",
+    forca:"Disciplina e prudência. Você já faz o que muita gente ainda está tentando aprender: gastar menos do que ganha.",
+    cuidado:"O medo pode travar o crescimento. Dinheiro parado na conta perde para a inflação, e a culpa aparece até nos gastos que você poderia se permitir.",
+    manobra:"Coloque uma parte em renda fixa segura, como Tesouro Selic ou CDB com liquidez diária. O dinheiro trabalha sem tirar o seu sono. E reserve um valor mensal para você, sem culpa.",
+    passo:"Faça o Raio-X financeiro da Terça Técnica e veja quantos meses de reserva você já tem. Talvez você esteja mais segura do que sente."},
+ B:{name:"Lobo Impulsivo",tag:"Coragem de sobra. A emoção chega antes da razão.",
+    desc:"Você vive o presente com intensidade e decide rápido. Isso traz experiências boas, mas também compras que pareciam urgentes e depois pesam na fatura.",
+    forca:"Energia e coragem para agir. Quem decide rápido também consegue mudar rápido quando encontra o caminho certo.",
+    cuidado:"Compras por recompensa, por pressa ou por comparação. O alívio dura pouco e a parcela dura meses.",
+    manobra:"Regra das 72 horas: o que não estava na lista espera três dias. E defina um teto de gasto livre por mês, para aproveitar sem culpa e sem susto.",
+    passo:"Participe do Desafio Diário de Gastos Emocionais e descubra qual emoção mais gasta por você."},
+ C:{name:"Lobo Estrategista",tag:"Já junta emoção e técnica. Agora é refinar.",
+    desc:"Você planeja, acompanha e sabe para onde o dinheiro vai. As emoções aparecem, mas não decidem sozinhas. É o perfil que a Manada inteira quer alcançar.",
+    forca:"Visão de longo prazo e equilíbrio. Você consegue aproveitar o presente sem sacrificar o futuro.",
+    cuidado:"Excesso de controle pode virar rigidez. E ficar no mesmo plano por muito tempo pode deixar dinheiro na mesa.",
+    manobra:"Automatize o que funciona e acompanhe os seus 4 indicadores todo mês. Depois, ajude quem está começando: ensinar também consolida.",
+    passo:"Calcule seus 4 indicadores no painel da Manada e compartilhe uma dica na Sexta Livre. Você é candidata a Guardiã da Manada."},
+ D:{name:"Lobo Distraído",tag:"O dinheiro escorre sem você perceber.",
+    desc:"Você evita olhar para o dinheiro. Não por descuido, mas porque o assunto cansa ou incomoda. Enquanto isso, pequenos gastos se acumulam e o mês termina antes do salário.",
+    forca:"Leveza. Você não vive em função do dinheiro, e isso é saudável. Só falta um pouco de direção.",
+    cuidado:"O que não é visto não pode ser cuidado. Assinaturas esquecidas, juros e gastos pequenos viram um valor grande no fim do ano.",
+    manobra:"Comece pequeno: o Raio-X de 15 minutos e uma olhada por semana no extrato, sempre no mesmo dia. Consistência vale mais do que perfeição.",
+    passo:"Abra a fatura do cartão hoje e conte quantas assinaturas você paga. Esse é o seu primeiro passo."},
+};
+const ORDER=["A","B","C","D"];
+let i=0, ans=[];
+const $=s=>document.querySelector(s);
+function show(id){["intro","quiz","res"].forEach(s=>$("#"+s).hidden=s!==id);window.scrollTo({top:0});}
+function renderQ(){
+  const p=$("#progress");p.textContent="";Q.forEach((_,k)=>{const b=document.createElement("i");if(k<=i)b.className="on";p.append(b);});
+  $("#qcount").textContent=`Pergunta ${i+1} de ${Q.length}`;
+  $("#q").textContent=Q[i].q;
+  const o=$("#opts");o.textContent="";
+  Q[i].o.forEach(([k,t],n)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.setAttribute("aria-pressed",String(ans[i]===k));
+    const s=document.createElement("span");s.className="k";s.textContent=String.fromCharCode(97+n);const tx=document.createElement("span");tx.textContent=t;b.append(s,tx);
+    b.addEventListener("click",()=>{ans[i]=k;if(i<Q.length-1){i++;renderQ();}else result();});o.append(b);});
+  $("#back").style.visibility=i===0?"hidden":"visible";
+  o.querySelector(".opt")?.focus({preventScroll:true});
+}
+function result(){
+  const c={A:0,B:0,C:0,D:0};ans.forEach(a=>c[a]++);
+  const sorted=ORDER.slice().sort((x,y)=>c[y]-c[x]||ORDER.indexOf(x)-ORDER.indexOf(y));
+  const top=sorted[0],second=sorted[1],pr=P[top];
+  $("#r-name").textContent=pr.name;
+  $("#r-tag").textContent=c[second]===c[top]?`${pr.tag} Com traços de ${P[second].name}.`:pr.tag;
+  const bars=$("#r-bars");bars.textContent="";
+  ORDER.forEach(k=>{const r=document.createElement("div");r.className="bar";const l=document.createElement("span");l.textContent=P[k].name.replace("Lobo ","");
+    const t=document.createElement("div");const f=document.createElement("span");f.style.width=(c[k]/Q.length*100)+"%";t.append(f);const n=document.createElement("b");n.textContent=c[k];r.append(l,t,n);bars.append(r);});
+  $("#r-desc").textContent=pr.desc;$("#r-forca").textContent=pr.forca;$("#r-cuidado").textContent=pr.cuidado;$("#r-manobra").textContent=pr.manobra;$("#r-passo").textContent=pr.passo;
+  const share=`Fiz o quiz da Manada e sou ${pr.name} 🐺\n"${pr.tag}"\n\nMinha manobra: ${pr.manobra}\n\n#EuNaManada #FinançasQueCuram`;
+  $("#wa").href="https://wa.me/?text="+encodeURIComponent(share);
+  $("#copy").onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(share);ok=true;}catch(e){}
+    $("#status").textContent=ok?"Resultado copiado. Cole no grupo da Manada.":"Não deu para copiar automaticamente. Tire um print do cartão.";};
+  $("#status").textContent="";
+  show("res");
+}
+$("#start").addEventListener("click",()=>{i=0;ans=[];show("quiz");renderQ();});
+$("#back").addEventListener("click",()=>{if(i>0){i--;renderQ();}});
+$("#again").addEventListener("click",()=>{i=0;ans=[];show("quiz");renderQ();});
+</script>
