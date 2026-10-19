@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="https://financasquecuram.com.br/assets/logo/favicon.png">
+<title>Decisor ENOP·SMED</title>
+<style>
+/* Layout: ferramenta de uma coluna estreita; perguntas em cartões grandes de toque, resultado como "cartão de decisão" no padrão do método */
+:root{
+  --paper:#f5f1e9; --card:#fffdf9; --ink:#233c36; --muted:#637069; --line:#dcded3; --accent:#a16c46; --sage:#597567;
+  --deep:#233c36; --deep-fg:#ffffff; --deep-muted:#cbd8d1; --sand:#e8d2b2; --sel:#efe6d8;
+  --go:#2f6b4f; --go-bg:#d9eadf; --warn:#8a5a12; --warn-bg:#f6e6c8; --wait:#31516e; --wait-bg:#dbe5ee; --stop:#9b3b2e; --stop-bg:#f5dcd6;
+  --serif:Georgia,"Times New Roman",serif; --sans:Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141c1a; --card:#1b2522; --ink:#e9e4d8; --muted:#a2ada6; --line:#2f3b37; --accent:#d29d72; --sage:#9dbba9;
+  --deep:#0e1513; --deep-fg:#f3efe6; --deep-muted:#a9b8b0; --sand:#e8d2b2; --sel:#26332f;
+  --go:#8fd3ae; --go-bg:#183a2a; --warn:#f0c77d; --warn-bg:#3d2f17; --wait:#9cc3e6; --wait-bg:#1b2e40; --stop:#f2a597; --stop-bg:#43231e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141c1a; --card:#1b2522; --ink:#e9e4d8; --muted:#a2ada6; --line:#2f3b37; --accent:#d29d72; --sage:#9dbba9;
+  --deep:#0e1513; --deep-fg:#f3efe6; --deep-muted:#a9b8b0; --sand:#e8d2b2; --sel:#26332f;
+  --go:#8fd3ae; --go-bg:#183a2a; --warn:#f0c77d; --warn-bg:#3d2f17; --wait:#9cc3e6; --wait-bg:#1b2e40; --stop:#f2a597; --stop-bg:#43231e; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+button,input,a{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #ba895a;outline-offset:3px}
+.wrap{max-width:640px;margin:0 auto;padding-block:26px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+.brand{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px}
+.brand b{font:20px var(--serif);font-weight:normal}
+.brand span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--accent)}
+h1{font:clamp(32px,7.5vw,48px)/1.06 var(--serif);letter-spacing:-.03em;margin:8px 0 10px;text-wrap:balance}
+h1 em{font-weight:normal;color:var(--sage)}
+.lead{color:var(--muted);font-size:16px;margin:0;max-width:52ch}
+.mode{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px;gap:4px}
+.mode button{border:0;background:transparent;border-radius:7px;padding:8px 14px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.mode button[aria-pressed="true"]{background:var(--deep);color:var(--deep-fg)}
+.step{display:grid;gap:10px}
+.step h2{font:22px/1.25 var(--serif);margin:0}
+.step .n{color:var(--accent);font:700 12px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.field{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.field input{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:13px 14px;font-size:16px;color:var(--ink);width:100%}
+.row2{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+@media(max-width:480px){.row2{grid-template-columns:1fr}}
+.areas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media(max-width:480px){.areas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.area{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 10px;text-align:left;cursor:pointer;display:grid;gap:2px}
+.area b{font:26px/1 var(--serif)}
+.area span{font-size:13px;font-weight:600}
+.area small{font-size:11px;color:var(--muted)}
+.area[aria-pressed="true"]{background:var(--sel);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:10px}
+.q p{margin:0;font-weight:600}
+.q small{color:var(--muted);font-size:13px;font-weight:400}
+.yn{display:flex;gap:8px}
+.yn button{flex:1;border:1px solid var(--line);background:transparent;border-radius:9px;padding:10px;font-weight:700;cursor:pointer}
+.yn button[aria-pressed="true"][data-v="1"]{background:var(--go-bg);color:var(--go);border-color:var(--go)}
+.yn button[aria-pressed="true"][data-v="0"]{background:var(--stop-bg);color:var(--stop);border-color:var(--stop)}
+.result{background:var(--deep);color:var(--deep-fg);border-radius:16px;padding:24px 22px;display:grid;gap:14px}
+.result .eyebrow{color:var(--sand)}
+.verdict{font:clamp(30px,8vw,44px)/1.05 var(--serif);margin:0}
+.calc{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:15px;color:var(--deep-muted)}
+.calc b{color:var(--deep-fg);font:28px var(--serif);font-variant-numeric:tabular-nums}
+.pill{display:inline-block;border-radius:40px;padding:5px 12px;font-size:13px;font-weight:700}
+.scale{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;font-size:11px}
+.scale div{border-radius:8px;padding:8px 6px;background:rgba(255,255,255,.07);color:var(--deep-muted);text-align:center;line-height:1.3}
+.scale div.on{background:var(--sand);color:#233c36;font-weight:700}
+.result p{margin:0;max-width:56ch}
+.stars{font-size:34px;letter-spacing:4px}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:10px;padding:13px 18px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none}
+.btn.main{background:var(--sand);color:#233c36}
+.btn.ghost{background:transparent;color:var(--deep-fg);border:1px solid rgba(255,255,255,.3)}
+.btn.wa{background:transparent;color:var(--deep-fg);border:1.5px solid #25a366}
+.ex{display:flex;flex-wrap:wrap;gap:8px}
+.ex button{border:1px solid var(--line);background:var(--card);border-radius:40px;padding:6px 12px;font-size:13px;cursor:pointer}
+.status{min-height:18px;font-size:13px;color:var(--sand)}
+.indice{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.indice b{font:34px var(--serif);color:var(--accent);font-variant-numeric:tabular-nums}
+.indice span{font-size:13px;color:var(--muted)}
+.hist{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+.hist em{font-style:normal;color:var(--muted)}
+.note-s{margin:0;font-size:12px;color:var(--muted)}
+.method{border-top:1px solid var(--line);padding-top:16px;font-size:14px;color:var(--muted);display:grid;gap:6px}
+.method b{color:var(--ink)}
+</style>
+</head>
+<body>
+<p style="max-width:640px;margin:14px auto 0;padding:0 16px;font:600 13px Arial,sans-serif"><a href="../" style="color:#a16c46;text-decoration:none">← Biblioteca Finanças que Curam</a></p>
+
+
+<div class="wrap">
+  <div class="brand"><b>Finanças que Curam</b><span>Método ENOP·SMED · Aline Seabra</span></div>
+
+  <div>
+    <div class="eyebrow">Nem todo gasto possível é um gasto plausível</div>
+    <h1>Posso gastar <em>agora</em>, ou dá para esperar?</h1>
+    <p class="lead">Responda três perguntas e escolha a área do gasto. O método calcula a pontuação e mostra a decisão, sem culpa e sem impulso.</p>
+  </div>
+
+  <div class="mode" role="group" aria-label="Versão">
+    <button type="button" id="m-adulto" aria-pressed="true">Adulto</button>
+    <button type="button" id="m-kids" aria-pressed="false">Família (ENOP Kids)</button>
+  </div>
+
+  <div class="step">
+    <span class="n">Exemplos rápidos</span>
+    <div class="ex" id="examples"></div>
+  </div>
+
+  <div class="step">
+    <span class="n">1 · O gasto</span>
+    <div class="row2">
+      <label class="field" for="g-desc">O que você quer comprar ou pagar?<input id="g-desc" placeholder="Ex.: troca do sofá"></label>
+      <label class="field" for="g-val">Valor (R$)<input id="g-val" inputmode="decimal" placeholder="Opcional"></label>
+    </div>
+  </div>
+
+  <div class="step" id="area-step">
+    <span class="n">2 · SMED · Onde o gasto pesa</span>
+    <div class="areas" id="areas" role="group" aria-label="Área do gasto"></div>
+  </div>
+
+  <div class="step">
+    <span class="n" id="q-title">3 · ENOP · Três perguntas</span>
+    <div id="questions" style="display:grid;gap:10px"></div>
+  </div>
+
+  <section class="result" id="result" aria-live="polite"></section>
+
+  <section class="step" id="hist" hidden>
+    <span class="n">Seus gastos avaliados agora</span>
+    <div class="indice"><b id="ic-val">0%</b><span>Índice de Consciência: % dos gastos avaliados com pontuação 8 ou mais.</span></div>
+    <ol class="hist" id="hist-list"></ol>
+    <p class="note-s">A lista fica só nesta tela e some ao fechar a página.</p>
+  </section>
+
+  <div class="method" id="method"></div>
+</div>
+
+<script>
+const AREAS=[{k:"S",n:"Saúde",p:5,r:"Nunca negligenciar"},{k:"M",n:"Moradia e Finanças",p:4,r:"Casa, dívidas, cartão, investimentos, seguro"},{k:"E",n:"Educação",p:3,r:"Crescimento"},{k:"D",n:"Diversos / Diversão",p:2,r:"Máximo 6 pontos"}];
+const QA=[{t:"E/N · É essencial ou necessário agora?",h:"Essencial: sem ele, algo grave acontece. Necessário: importante para a vida funcionar."},
+          {t:"O · Cabe no orçamento?",h:"Cabe no fluxo de caixa do mês sem desequilibrar o resto."},
+          {t:"P · Não é postergável? Precisa ser agora?",h:"Responda SIM se precisa ser agora. Se pode esperar sem prejuízo, responda NÃO."}];
+const QK=[{t:"Preciso disso para ficar bem?",h:"Se eu não tiver, vou ficar mal?"},{t:"Tenho dinheiro para isso agora?",h:"Na mesada ou no cofrinho."},{t:"Precisa ser agora?",h:"Se pode comprar depois, responda NÃO."}];
+const EX=[{d:"Remédio",a:"S",q:[1,1,1]},{d:"Conserto da casa",a:"M",q:[1,1,0]},{d:"Curso",a:"E",q:[1,1,0]},{d:"Roupa por impulso",a:"D",q:[0,1,0]}];
+let mode="adulto", area=null, ans=[null,null,null], hist=[];
+function renderHist(){
+  const h=document.getElementById("hist");h.hidden=!hist.length;if(!hist.length)return;
+  const ok=hist.filter(x=>x.sc>=8).length;document.getElementById("ic-val").textContent=Math.round(ok/hist.length*100)+"%";
+  const l=document.getElementById("hist-list");l.textContent="";
+  hist.forEach(x=>{const li=document.createElement("li");li.append(document.createTextNode(`${x.d}${x.v?" · R$ "+x.v:""} `));const e=document.createElement("em");e.textContent=`${x.a} · ${x.sc} pts · ${x.t}`;li.append(e);l.append(li);});
+}
+const $=s=>document.querySelector(s);
+
+function renderAreas(){
+  const box=$("#areas");box.textContent="";
+  AREAS.forEach(a=>{const b=document.createElement("button");b.type="button";b.className="area";b.setAttribute("aria-pressed",String(area===a.k));
+    const big=document.createElement("b");big.textContent=a.k;const n=document.createElement("span");n.textContent=a.n;const s=document.createElement("small");s.textContent="Peso "+a.p+" · "+a.r;
+    b.append(big,n,s);b.addEventListener("click",()=>{area=a.k;renderAreas();renderResult();});box.append(b);});
+}
+function renderQs(){
+  const qs=mode==="kids"?QK:QA, box=$("#questions");box.textContent="";
+  $("#q-title").textContent=mode==="kids"?"2 · Três perguntas":"3 · ENOP · Três perguntas";
+  qs.forEach((q,i)=>{const c=document.createElement("div");c.className="q";const p=document.createElement("p");p.textContent=q.t;const s=document.createElement("small");s.textContent=q.h;p.append(document.createElement("br"),s);
+    const yn=document.createElement("div");yn.className="yn";
+    [["Sim",1],["Não",0]].forEach(([l,v])=>{const b=document.createElement("button");b.type="button";b.textContent=l;b.dataset.v=v;b.setAttribute("aria-pressed",String(ans[i]===v));
+      b.addEventListener("click",()=>{ans[i]=v;renderQs();renderResult();});yn.append(b);});
+    c.append(p,yn);box.append(c);});
+}
+function decision(score){
+  if(score>=12)return{t:"Executar",c:"go",i:0,d:"Prioridade máxima. Pode seguir com o gasto."};
+  if(score>=8)return{t:"Executar com controle",c:"warn",i:1,d:"Prioridade média. Faça, mas defina um teto e acompanhe o caixa."};
+  if(score>=5)return{t:"Postergar",c:"wait",i:2,d:"Baixa prioridade agora. Programe para depois, guarde aos poucos ou parcele sem juros."};
+  return{t:"Cancelar",c:"stop",i:3,d:"Sinal de gasto emocional. Antes de comprar, pergunte o que você está sentindo agora."};
+}
+const S3={3:"3S · Gasto crítico e inadiável",2:"2S · Gasto relevante",1:"1S · Gasto frágil, reavaliar",0:"0S · Gasto emocional ou impulso"};
+const KIDS={3:["⭐⭐⭐","Pode comprar"],2:["⭐⭐","Pensar melhor"],1:["⭐","Esperar"],0:["❌","Não comprar"]};
+function shareText(){
+  const desc=$("#g-desc").value.trim()||"este gasto", val=$("#g-val").value.trim();
+  const ns=ans.reduce((a,b)=>a+(b||0),0);
+  if(mode==="kids"){const k=KIDS[ns];return `Usei o ENOP Kids para decidir sobre ${desc}: ${k[0]} ${k[1]}.\n\nMétodo ENOP·SMED · Finanças que Curam`;}
+  const a=AREAS.find(x=>x.k===area), sc=ns*a.p, dcs=decision(sc);
+  return `Passei ${desc}${val?" (R$ "+val+")":""} pelo método ENOP·SMED:\n${S3[ns]}\nÁrea ${a.n} (peso ${a.p})\nPontuação ${ns} × ${a.p} = ${sc}\nDecisão: ${dcs.t}\n\n#MétodoENOPSMED #FinançasQueCuram`;
+}
+function renderResult(){
+  const r=$("#result");r.textContent="";
+  const done=ans.every(v=>v!==null)&&(mode==="kids"||area);
+  const eb=document.createElement("div");eb.className="eyebrow";eb.textContent="Cartão de decisão";r.append(eb);
+  if(!done){const p=document.createElement("p");p.textContent=mode==="kids"?"Responda às três perguntas para ver as estrelas.":"Escolha a área e responda às três perguntas para ver a decisão.";r.append(p);return;}
+  const ns=ans.reduce((a,b)=>a+b,0);
+  if(mode==="kids"){
+    const k=KIDS[ns];const st=document.createElement("div");st.className="stars";st.textContent=k[0];
+    const v=document.createElement("p");v.className="verdict";v.textContent=k[1];
+    const p=document.createElement("p");p.textContent="Ninguém é proibido de nada: a gente aprende a escolher a hora certa.";
+    r.append(st,v,p);
+  }else{
+    const a=AREAS.find(x=>x.k===area), sc=ns*a.p, d=decision(sc);
+    const v=document.createElement("p");v.className="verdict";v.textContent=d.t;
+    const calc=document.createElement("div");calc.className="calc";
+    const pill=document.createElement("span");pill.className="pill";pill.style.background=`var(--${d.c}-bg)`;pill.style.color=`var(--${d.c})`;pill.textContent=S3[ns];
+    const f=document.createElement("span");f.append(document.createTextNode(`${ns} S × peso ${a.p} (${a.n}) = `));const b=document.createElement("b");b.textContent=sc;f.append(b);
+    calc.append(pill,f);
+    const scale=document.createElement("div");scale.className="scale";
+    [["12 a 15","Executar"],["8 a 11","Com controle"],["5 a 7","Postergar"],["0 a 4","Cancelar"]].forEach(([n,l],i)=>{const x=document.createElement("div");if(i===d.i)x.className="on";x.textContent=n;x.append(document.createElement("br"),document.createTextNode(l));scale.append(x);});
+    const p=document.createElement("p");p.textContent=d.d;
+    r.append(v,calc,scale,p);
+  }
+  const act=document.createElement("div");act.className="actions";
+  const cp=document.createElement("button");cp.type="button";cp.className="btn main";cp.textContent="Copiar resultado";
+  const stt=document.createElement("p");stt.className="status";stt.setAttribute("role","status");
+  cp.addEventListener("click",async()=>{let ok=false;try{await navigator.clipboard.writeText(shareText());ok=true;}catch(e){}stt.textContent=ok?"Resultado copiado.":"Não deu para copiar. Tire um print do cartão.";});
+  const wa=document.createElement("a");wa.className="btn wa";wa.textContent="Enviar no WhatsApp";wa.href="https://wa.me/?text="+encodeURIComponent(shareText());wa.target="_blank";wa.rel="noopener";
+  if(mode==="adulto"){const sv=document.createElement("button");sv.type="button";sv.className="btn ghost";sv.textContent="Guardar na lista";
+    sv.addEventListener("click",()=>{const a=AREAS.find(x=>x.k===area),sc=ans.reduce((x,y)=>x+y,0)*a.p;hist.push({d:$("#g-desc").value.trim()||"Gasto sem nome",v:$("#g-val").value.trim(),a:a.k,sc,t:decision(sc).t});renderHist();stt.textContent="Guardado na lista abaixo.";});
+    act.append(sv);}
+  const rs=document.createElement("button");rs.type="button";rs.className="btn ghost";rs.textContent="Novo gasto";
+  rs.addEventListener("click",()=>{ans=[null,null,null];area=null;$("#g-desc").value="";$("#g-val").value="";renderAll();window.scrollTo({top:0});});
+  act.append(cp,wa,rs);r.append(act,stt);
+}
+function renderMethod(){
+  const m=$("#method");m.textContent="";
+  const lines=mode==="kids"?[["ENOP Kids","três perguntas simples e estrelas: ⭐⭐⭐ pode comprar, ⭐⭐ pensar melhor, ⭐ esperar, ❌ não comprar."],["Para os pais","a criança aprende a priorizar, não apenas a não gastar."]]
+   :[["SMED","é a área do gasto, com peso de importância: Saúde 5, Moradia e Finanças 4, Educação 3, Diversos / Diversão 2."],["ENOP","são três perguntas de temporalidade: E/N é essencial ou necessário agora? O cabe no orçamento? P não é postergável?"],["Pontuação","nº de SIM × peso da área, de 0 a 15. 12 a 15 executar, 8 a 11 executar com controle, 5 a 7 postergar, 0 a 4 cancelar."],["Área D","o máximo é 6 pontos (3 × 2): um gasto de diversão nunca passa de Postergar."],["Índice de Consciência","% dos gastos avaliados com pontuação 8 ou mais."]];
+  lines.forEach(([b,t])=>{const p=document.createElement("div");const x=document.createElement("b");x.textContent=b+" ";p.append(x,document.createTextNode(t));m.append(p);});
+  const s=document.createElement("div");s.textContent="Método ENOP·SMED · Aline Seabra · Finanças que Curam. Ferramenta educativa.";s.style.fontSize="12px";m.append(s);
+}
+function renderExamples(){
+  const box=$("#examples");box.textContent="";
+  EX.forEach(e=>{const b=document.createElement("button");b.type="button";b.textContent=e.d;b.addEventListener("click",()=>{$("#g-desc").value=e.d;area=e.a;ans=e.q.slice();renderAll();$("#result").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});});box.append(b);});
+}
+function setMode(m){mode=m;$("#m-adulto").setAttribute("aria-pressed",String(m==="adulto"));$("#m-kids").setAttribute("aria-pressed",String(m==="kids"));$("#area-step").hidden=m==="kids";ans=[null,null,null];renderAll();}
+function renderAll(){renderAreas();renderQs();renderResult();renderMethod();renderExamples();}
+$("#m-adulto").addEventListener("click",()=>setMode("adulto"));
+$("#m-kids").addEventListener("click",()=>setMode("kids"));
+["#g-desc","#g-val"].forEach(s=>$(s).addEventListener("input",()=>{if(ans.every(v=>v!==null))renderResult();}));
+renderAll();
+</script>
+
+</body>
+</html>

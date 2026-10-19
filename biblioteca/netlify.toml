@@ -1,0 +1,9 @@
+# Biblioteca Finanças que Curam: site estático, sem build.
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/posts.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

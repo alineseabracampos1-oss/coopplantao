@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Biblioteca Finanças que Curam</title>
+<meta name="description" content="Conteúdos, ferramentas e materiais gratuitos do Finanças que Curam, com o Método ENOP·SMED da Aline Seabra.">
+<meta property="og:title" content="Biblioteca Finanças que Curam">
+<meta property="og:description" content="Conteúdos, ferramentas e materiais gratuitos para organizar o dinheiro sem ignorar o que você sente.">
+<link rel="icon" href="https://financasquecuram.com.br/assets/logo/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Paleta e tipografia do brandboard "Serenidade e Direção" (financasquecuram.com.br) */
+:root{
+  --azul:#2F3E4E; --azul2:#3D5166; --lav:#AEA0C7; --lav-cl:#E4DCF0; --taupe:#8f857a; --areia:#E6D6BD; --areia-cl:#F2E7D3;
+  --rosa:#C89AA0; --rosa-cl:#F0DADD; --rosa-txt:#B06E77; --marfim:#F6F2ED; --branco:#FFFFFF; --texto:#3f3a3d; --linha:#e6ded3;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter',system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+  --sombra:0 4px 24px rgba(47,62,78,.10); --raio:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--texto);background:var(--marfim);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--lav);outline-offset:3px}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+header.top{background:var(--branco);border-bottom:1px solid var(--linha)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo img{width:36px;height:36px;object-fit:contain}
+.logo b{font:600 1.35rem var(--serif);color:var(--azul)}
+.logo span{display:block;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rosa-txt)}
+.top nav{display:flex;gap:18px;font-size:.85rem;font-weight:500;flex-wrap:wrap}
+.top nav a{text-decoration:none;color:var(--azul2)}
+.hero{padding-block:56px 36px}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--rosa-txt)}
+h1{font:600 clamp(2.4rem,6vw,3.8rem)/1.05 var(--serif);color:var(--azul);margin:12px 0 14px;text-wrap:balance}
+h1 em{font-weight:500;color:var(--rosa-txt)}
+.lead{max-width:600px;color:#6b6460;font-size:1.05rem}
+.sec{padding-block:30px 46px}
+.sec h2{font:600 clamp(1.8rem,4vw,2.4rem)/1.1 var(--serif);color:var(--azul);margin:8px 0 6px}
+.sec .sub{color:#7a726b;margin-bottom:22px;max-width:620px}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.tool{background:var(--branco);border-radius:var(--raio);padding:24px;box-shadow:var(--sombra);display:grid;gap:10px;text-decoration:none;border:1px solid transparent;transition:transform .18s, border-color .18s}
+.tool:hover{transform:translateY(-2px);border-color:var(--lav)}
+.tool .tg{font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lav)}
+.tool h3{font:600 1.5rem/1.15 var(--serif);color:var(--azul)}
+.tool p{font-size:.92rem;color:#6b6460}
+.tool .go{font-size:.85rem;font-weight:600;color:var(--rosa-txt)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;align-items:center}
+.filters button{border:1px solid var(--linha);background:var(--branco);color:var(--azul2);border-radius:40px;padding:7px 14px;font:500 .82rem var(--sans);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--azul);color:var(--branco);border-color:var(--azul)}
+.filters input{flex:1 1 200px;min-width:0;border:1px solid var(--linha);border-radius:40px;padding:9px 16px;font:400 .9rem var(--sans);background:var(--branco)}
+.feed{display:grid;gap:22px}
+.post{background:var(--branco);border-radius:var(--raio);box-shadow:var(--sombra);overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr)}
+.post-body{padding:26px 28px 24px;display:grid;gap:12px}
+.post .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:.75rem;color:var(--taupe)}
+.post .q{font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rosa-txt)}
+.post h3{font:600 clamp(1.5rem,3.5vw,2rem)/1.15 var(--serif);color:var(--azul);text-wrap:balance}
+.post .txt{max-width:66ch;display:grid;gap:10px;color:#4b4547}
+.post .txt.clamp{max-height:11.5em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 65%,transparent)}
+.post .more{justify-self:start;background:none;border:0;color:var(--rosa-txt);font:600 .85rem var(--sans);cursor:pointer;padding:0}
+.post .cover{aspect-ratio:16/9;object-fit:cover;width:100%}
+.deck{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px}
+.slide{flex:0 0 min(78%,300px);aspect-ratio:4/5;border-radius:14px;padding:22px 20px 16px;display:flex;flex-direction:column;justify-content:space-between;scroll-snap-align:start;position:relative;overflow:hidden;background:var(--areia-cl);color:var(--azul)}
+.slide.alt{background:var(--azul);color:var(--branco)}
+.slide.photo{color:var(--branco);background-size:cover;background-position:center}
+.slide.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(38,51,63,.15),rgba(38,51,63,.85))}
+.slide>*{position:relative}
+.slide .n{font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--rosa-txt)}
+.slide.alt .n,.slide.photo .n{color:var(--areia)}
+.slide .t{font:600 1.45rem/1.15 var(--serif);margin-bottom:8px}
+.slide.first .t{font-size:1.9rem}
+.slide .b{font-size:.85rem;line-height:1.5;white-space:pre-line}
+.slide .f{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75;display:flex;justify-content:space-between}
+.legenda{white-space:pre-line;color:#4b4547;font-size:.95rem;max-width:66ch}
+.mat{display:inline-flex;align-items:center;gap:8px;justify-self:start;background:var(--lav-cl);color:var(--azul);border-radius:40px;padding:9px 16px;font:600 .85rem var(--sans);text-decoration:none}
+.share{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.share a,.share button{font:600 .8rem var(--sans);border-radius:40px;padding:8px 14px;border:1px solid var(--linha);background:var(--branco);color:var(--azul2);cursor:pointer;text-decoration:none}
+.empty{background:var(--branco);border-radius:var(--raio);padding:36px;text-align:center;box-shadow:var(--sombra)}
+.empty h3{font:600 1.6rem var(--serif);color:var(--azul);margin-bottom:6px}
+.mats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.matc{background:var(--branco);border-radius:14px;padding:18px 20px;border:1px solid var(--linha);display:grid;gap:6px;text-decoration:none}
+.matc b{font:600 1.25rem var(--serif);color:var(--azul)}
+.matc span{font-size:.85rem;color:#7a726b}
+.matc em{font-style:normal;font-size:.8rem;font-weight:600;color:var(--rosa-txt)}
+.cta{background:var(--azul);color:var(--branco);border-radius:var(--raio);padding:34px 30px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.cta h2{color:var(--branco)}
+.cta p{color:#d7dde4;max-width:520px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:40px;padding:14px 26px;font:600 .85rem var(--sans);text-decoration:none;background:var(--rosa);color:var(--branco)}
+footer{padding-block:28px 40px;color:#8a827b;font-size:.8rem;text-align:center}
+@media (min-width:860px){.post.has-cover{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}.post.has-cover .cover{aspect-ratio:auto;height:100%}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tool{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="https://financasquecuram.com.br"><img src="https://financasquecuram.com.br/assets/logo/simbolo.png" alt=""><div><b>Finanças que Curam</b><span>Biblioteca</span></div></a>
+  <nav><a href="#conteudos">Conteúdos</a><a href="#ferramentas">Ferramentas</a><a href="#materiais">Materiais</a><a href="https://financasquecuram.com.br">Site</a></nav>
+</div></header>
+
+<main>
+  <section class="hero wrap">
+    <p class="eyebrow">Biblioteca Finanças que Curam</p>
+    <h1>Organize o dinheiro<br><em>sem ignorar o que você sente.</em></h1>
+    <p class="lead">Conteúdos, ferramentas e materiais gratuitos para decidir melhor antes de gastar, com o Método ENOP·SMED. Nem todo gasto possível é um gasto plausível.</p>
+  </section>
+
+  <section class="sec wrap" id="ferramentas">
+    <p class="eyebrow">Ferramentas</p>
+    <h2>Use agora, de graça</h2>
+    <p class="sub">Funcionam no celular e não pedem cadastro.</p>
+    <div class="tools">
+      <a class="tool" href="decisor/"><span class="tg">Método ENOP·SMED</span><h3>Decisor ENOP·SMED</h3><p>Três perguntas e a área do gasto viram uma pontuação: executar, executar com controle, postergar ou cancelar.</p><span class="go">Abrir o Decisor →</span></a>
+      <a class="tool" href="quiz/"><span class="tg">Quiz</span><h3>Que lobo financeiro você é?</h3><p>Seis perguntas sobre como você sente e decide com dinheiro, e a manobra certa para o seu perfil.</p><span class="go">Fazer o quiz →</span></a>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="conteudos">
+    <p class="eyebrow">Conteúdos</p>
+    <h2>Últimos conteúdos</h2>
+    <p class="sub">Os mesmos conteúdos da comunidade, organizados para você ler com calma e compartilhar.</p>
+    <div class="filters" id="filters" role="group" aria-label="Filtrar por tema"></div>
+    <div class="feed" id="feed"><div class="empty"><h3>Carregando conteúdos…</h3></div></div>
+  </section>
+
+  <section class="sec wrap" id="materiais">
+    <p class="eyebrow">Materiais</p>
+    <h2>Planilhas para baixar</h2>
+    <p class="sub">Preencha as células amarelas: o resto é calculado sozinho. Funcionam no Excel e no Google Planilhas.</p>
+    <div class="mats">
+      <a class="matc" href="materiais/Raio-X-Financeiro-FQC.xlsx" download><b>Raio-X financeiro</b><span>Os 5 números do seu dinheiro e os 4 indicadores com semáforo.</span><em>Baixar planilha</em></a>
+      <a class="matc" href="materiais/Mini-Sistema-Financeiro-FQC.xlsx" download><b>Mini sistema financeiro</b><span>Lançamentos com ENOP·SMED, metas, alertas de orçamento e Índice de Consciência.</span><em>Baixar planilha</em></a>
+      <a class="matc" href="materiais/Dividas-Avalanche-x-Bola-de-Neve-FQC.xlsx" download><b>Avalanche × Bola de neve</b><span>Simule os dois métodos e veja quando fica livre das dívidas.</span><em>Baixar planilha</em></a>
+      <a class="matc" href="materiais/Painel-4-Indicadores-FQC.xlsx" download><b>Painel dos 4 indicadores</b><span>Acompanhe poupança, endividamento, reserva e custo fixo mês a mês.</span><em>Baixar planilha</em></a>
+      <a class="matc" href="materiais/Plano-2027-OKR-FQC.xlsx" download><b>Plano 2027 (OKR)</b><span>Um objetivo, três resultados-chave e o check-in mensal.</span><em>Baixar planilha</em></a>
+    </div>
+  </section>
+
+  <section class="sec wrap">
+    <div class="cta">
+      <div><p class="eyebrow" style="color:var(--areia)">Consultoria e mentoria</p><h2>Quer aplicar o método na sua vida?</h2><p>Fale com o Finanças que Curam e conheça a consultoria e a mentoria com a Aline Seabra.</p></div>
+      <a class="btn" href="https://wa.me/5585997024094?text=Ol%C3%A1%21%20Vim%20da%20Biblioteca%20Finan%C3%A7as%20que%20Curam." target="_blank" rel="noopener">Falar no WhatsApp</a>
+    </div>
+  </section>
+</main>
+<footer>Finanças que Curam · Aline Seabra · Método ENOP·SMED · Conteúdo educativo, não é recomendação de investimento.</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+let posts=[], tema="", q="";
+const MESES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+function fmt(d){const [y,m,dd]=d.split("-");return `${Number(dd)} ${MESES[Number(m)-1]} ${y}`;}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function paras(t){const box=el("div","txt");(t||"").split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean).forEach(p=>box.append(el("p",null,p)));return box;}
+function deck(p){
+  const d=el("div","deck");d.setAttribute("aria-label","Lâminas do carrossel");
+  p.slides.forEach((s,i)=>{const c=el("div","slide"+(i===0?" first":"")+(i%2===1?" alt":""));
+    const img=(p.imagens||[])[i];if(img){c.classList.add("photo");c.style.backgroundImage=`url("${img}")`;}
+    c.append(el("div","n",i===0?(p.quadro||"Finanças que Curam"):String(i+1).padStart(2,"0")));
+    const mid=el("div");mid.append(el("p","t",s.t));if(s.b)mid.append(el("p","b",s.b));c.append(mid);
+    const f=el("div","f");f.append(el("span",null,"Finanças que Curam"),el("span",null,`${i+1}/${p.slides.length}`));c.append(f);d.append(c);});
+  return d;
+}
+function card(p){
+  const a=el("article","post");a.id="p-"+p.id;
+  const body=el("div","post-body");
+  const meta=el("div","meta");meta.append(el("span","q",p.quadro||p.tipo||""),el("span",null,fmt(p.data)));body.append(meta);
+  body.append(el("h3",null,p.titulo));
+  if(p.slides&&p.slides.length){body.append(deck(p));if(p.legenda)body.append(el("p","legenda",p.legenda));}
+  else{
+    if((p.imagens||[]).length){a.classList.add("has-cover");const im=el("img","cover");im.src=p.imagens[0];im.alt="";im.loading="lazy";a.append(im);}
+    const t=paras(p.texto);const long=(p.texto||"").length>520;if(long)t.classList.add("clamp");body.append(t);
+    if(long){const m=el("button","more","Ler tudo");m.type="button";m.addEventListener("click",()=>{t.classList.remove("clamp");m.remove();});body.append(m);}
+    if(p.legenda)body.append(el("p","legenda",p.legenda));
+  }
+  if(p.material){const m=el("a","mat",p.material.endsWith(".xlsx")?"Baixar a planilha deste conteúdo":"Abrir a ferramenta deste conteúdo");m.href=p.material;if(p.material.endsWith(".xlsx"))m.setAttribute("download","");body.append(m);}
+  const sh=el("div","share");const url=location.origin+location.pathname+"#p-"+p.id;
+  const wa=el("a",null,"Enviar no WhatsApp");wa.href="https://wa.me/?text="+encodeURIComponent(p.titulo+"\n"+url);wa.target="_blank";wa.rel="noopener";
+  const cp=el("button",null,"Copiar link");cp.type="button";cp.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(url);cp.textContent="Link copiado";}catch(e){cp.textContent=url;}});
+  sh.append(wa,cp);body.append(sh);a.append(body);return a;
+}
+function render(){
+  const temas=[...new Set(posts.map(p=>p.quadro).filter(Boolean))];
+  const f=$("#filters");f.textContent="";
+  [["","Todos"],...temas.map(t=>[t,t])].forEach(([v,l])=>{const b=el("button",null,l);b.type="button";b.setAttribute("aria-pressed",String(tema===v));b.addEventListener("click",()=>{tema=v;render();});f.append(b);});
+  const s=el("input");s.type="search";s.placeholder="Buscar conteúdo";s.value=q;s.setAttribute("aria-label","Buscar conteúdo");
+  s.addEventListener("input",()=>{q=s.value;renderFeed();});f.append(s);
+  renderFeed();
+}
+function renderFeed(){
+  const feed=$("#feed");feed.textContent="";
+  const qq=q.trim().toLowerCase();
+  const rows=posts.filter(p=>(!tema||p.quadro===tema)&&(!qq||(p.titulo+" "+(p.texto||"")+" "+(p.legenda||"")+" "+(p.slides||[]).map(s=>s.t+" "+s.b).join(" ")).toLowerCase().includes(qq)));
+  if(!rows.length){const e=el("div","empty");e.append(el("h3",null,posts.length?"Nenhum conteúdo encontrado":"Os primeiros conteúdos chegam em breve"),el("p",null,posts.length?"Tente outro tema ou outra palavra.":"Enquanto isso, use as ferramentas e baixe os materiais abaixo."));feed.append(e);return;}
+  rows.forEach(p=>feed.append(card(p)));
+  if(location.hash.startsWith("#p-")){const t=document.querySelector(location.hash);if(t)t.scrollIntoView();}
+}
+fetch("posts.json",{cache:"no-store"}).then(r=>r.ok?r.json():{posts:[]}).then(d=>{posts=(d.posts||[]);render();}).catch(()=>{posts=[];render();});
+</script>
+</body>
+</html>
