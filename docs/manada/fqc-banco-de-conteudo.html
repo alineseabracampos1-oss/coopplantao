@@ -164,6 +164,15 @@ dialog::backdrop{background:rgba(10,16,14,.55)}
 .thumb span{font-size:11px;color:var(--muted)}
 .thumb button{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:12px;background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .upload-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.sched{display:inline-block;margin:0 0 14px;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700}
+.sched-sched{background:var(--s-aprovado-bg);color:var(--s-aprovado)}
+.sched-now{background:var(--s-aguardando-bg);color:var(--s-aguardando)}
+.sched-nodest{background:var(--s-ajustar-bg);color:var(--s-ajustar)}
+.sched-pub{background:var(--s-publicado-bg);color:var(--s-publicado)}
+.dest{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.dest button{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:40px;padding:6px 12px;font-size:12.5px}
+.dest button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.agenda-head{margin-bottom:6px}
 .pub{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
 .pub-mat{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px}
 .pub-mat span{font-weight:600}
@@ -233,6 +242,7 @@ a.ghost.wa{border:1px solid #25a366;color:var(--panel-fg)}
 
   <div class="toolbar">
     <div class="tabs" role="tablist" aria-label="Visão">
+      <button role="tab" id="tab-agenda" aria-selected="false" data-view="agenda">Programação</button>
       <button role="tab" id="tab-cal" aria-selected="true" data-view="cal">Calendário</button>
       <button role="tab" id="tab-banco" aria-selected="false" data-view="banco">Banco (sem data)</button>
       <button role="tab" id="tab-todos" aria-selected="false" data-view="todos">Todos</button>
@@ -279,7 +289,8 @@ a.ghost.wa{border:1px solid #25a366;color:var(--panel-fg)}
       <label for="f-quadro">Quadro<input id="f-quadro" list="quadros" placeholder="Ex.: Quarta das Emoções"><datalist id="quadros"></datalist></label>
       <label for="f-formato">Formato<input id="f-formato" placeholder="Ex.: Carrossel, vídeo 60s, enquete"></label>
       <label for="f-data">Data de publicação<input id="f-data" type="date"><span class="hint">Deixe em branco para guardar no banco.</span></label>
-      <label for="f-horario">Horário<input id="f-horario" placeholder="Ex.: 19h"></label>
+      <label for="f-horario">Horário<input id="f-horario" placeholder="Ex.: 19h ou 19:30"></label>
+      <label for="f-destino">Publicar em<select id="f-destino"><option value="">Ainda não definido</option><option value="comunidade">Comunidade (grupo FQC)</option><option value="site">Site</option><option value="ambos">Comunidade + Site</option></select></label>
       <label class="full" for="f-pauta">Pauta / objetivo<textarea id="f-pauta" rows="2"></textarea></label>
       <label class="full" for="f-texto">Texto completo (fala ou post)<textarea id="f-texto"></textarea><span class="hint">Uma linha em branco separa cada fala. Trechos entre [colchetes] aparecem destacados como pendência. No carrossel, separe as lâminas com uma linha só com --- (a primeira linha de cada lâmina vira o título).</span></label>
       <label class="full" for="f-legenda">Legenda do post (o texto que vai junto do carrossel, vídeo ou imagem)<textarea id="f-legenda" rows="4"></textarea></label>
@@ -324,7 +335,19 @@ function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTi
 function fmtDate(iso){if(!iso)return"";const d=new Date(iso+"T12:00:00");return DIAS[d.getDay()]+" "+iso.slice(8,10)+"/"+iso.slice(5,7);}
 function fmtStamp(ts){if(!ts)return"";const d=new Date(ts);return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"});}
 function pill(k){const s=statusOf(k);const el=document.createElement("span");el.className="pill";el.style.background=`var(--s-${s.k}-bg)`;el.style.color=`var(--s-${s.k})`;el.textContent=s.l;return el;}
+function todayISO(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function horaMin(h){const m=/(\d{1,2})(?:\s*[:h]\s*(\d{2}))?/.exec(h||"");return m?Number(m[1])*60+Number(m[2]||0):24*60;}
+function when(it){if(!it.data)return null;const [y,mo,d]=it.data.split("-").map(Number);const mm=horaMin(it.horario);return new Date(y,mo-1,d,Math.floor(mm/60)%24,mm%60);}
+const DEST={comunidade:"Comunidade",site:"Site",ambos:"Comunidade + Site"};
+function schedState(it){
+  if(it.status==="publicado")return{k:"pub",t:"Publicado"};
+  if(it.status!=="aprovado"||!it.data)return null;
+  if(!it.destino)return{k:"nodest",t:"Aprovado · escolha onde publicar"};
+  const w=when(it);if(w&&w<=new Date())return{k:"now",t:"Hora de publicar · "+DEST[it.destino]};
+  return{k:"sched",t:"Programado · "+fmtDate(it.data)+(it.horario?" às "+it.horario:"")+" · "+DEST[it.destino]};
+}
 function sortItems(a,b){
+  if(view==="agenda"&&a.data&&b.data&&a.data===b.data) return horaMin(a.horario)-horaMin(b.horario);
   if(a.data&&b.data) return a.data.localeCompare(b.data)||(a.ordem||0)-(b.ordem||0);
   if(a.data) return -1; if(b.data) return 1;
   return (a.ordem||0)-(b.ordem||0)||(a.titulo||"").localeCompare(b.titulo||"");
@@ -334,6 +357,7 @@ function filtered(ignoreStatus){
   const tipo=$("#flt-tipo").value, mes=$("#flt-mes").value, q=$("#flt-busca").value.trim().toLowerCase();
   return items.filter(it=>{
     if(view==="cal"&&!it.data) return false;
+    if(view==="agenda"&&!(it.data&&(it.status==="aprovado"||it.status==="publicado")&&it.data>=todayISO(-1))) return false;
     if(view==="banco"&&it.data) return false;
     if(!ignoreStatus&&stFilter&&it.status!==stFilter) return false;
     if(tipo&&it.tipo!==tipo) return false;
@@ -370,6 +394,7 @@ function card(it){
   const eb=document.createElement("span");eb.className="eyebrow";
   eb.textContent=[it.tipo,it.quadro,it.data?fmtDate(it.data):"Banco",it.horario].filter(Boolean).join(" · ");
   top.append(eb,pill(it.status));
+  const ss=schedState(it);
   const h=document.createElement("h3");h.textContent=it.titulo||"Sem título";
   a.append(top,h);
   if(it.pauta||it.formato){const p=document.createElement("p");p.className="pauta";
@@ -383,6 +408,7 @@ function card(it){
     if(it.legenda){const lb=document.createElement("div");lb.className="deck-label";lb.style.marginTop="16px";lb.textContent="Legenda do post";const lg=document.createElement("div");lg.className="legenda";lg.textContent=it.legenda;a.append(lb,lg);}
     if((it.imagens||[]).length){const g=document.createElement("div");g.className="gallery";it.imagens.forEach(im=>{const img=document.createElement("img");img.src=imgUrl(im);img.alt=im.nome||"Imagem do conteúdo";img.loading="lazy";g.append(img);});a.append(g);}
   }
+  if(ss){const b=document.createElement("div");b.className="sched sched-"+ss.k;b.textContent=ss.t;a.insertBefore(b,h.nextSibling);}
   if(it.notas){const n=document.createElement("div");n.className="note";n.textContent="Observação: "+it.notas;a.append(n);}
   const meta=document.createElement("div");meta.className="meta";
   if(it.aprovadoEm){const s=document.createElement("span");s.textContent="Aprovado em "+fmtStamp(it.aprovadoEm);meta.append(s);}
@@ -395,7 +421,12 @@ function card(it){
   if(it.status!=="ajustar"&&it.status!=="publicado") btn("Pedir ajuste","adjust",()=>openEditor(it,"ajustar"),ro);
   if(it.status==="publicado"||it.status==="aprovado") btn("Voltar para revisão","outline",()=>setStatus(it,"aguardando"),ro);
   btn("Editar","outline",()=>openEditor(it),ro);
+  const dg=document.createElement("div");dg.className="dest";dg.setAttribute("role","group");dg.setAttribute("aria-label","Publicar em");
+  const dl=document.createElement("span");dl.textContent="Publicar em:";dg.append(dl);
+  [["comunidade","Comunidade"],["site","Site"],["ambos","Os dois"]].forEach(([k,l])=>{const b=document.createElement("button");b.type="button";b.textContent=l;b.disabled=ro;
+    b.setAttribute("aria-pressed",String(it.destino===k));b.addEventListener("click",async()=>{if(await write(it.id,{destino:it.destino===k?"":k,atualizadoEm:Date.now()}))toast(it.destino===k?"Destino removido.":"Vai para: "+DEST[k]+".");});dg.append(b);});
   btn("Ver no teleprompter ↑","outline",()=>{useInCopy(it.id);$("#gravacao").scrollIntoView();});
+  a.append(dg);
   a.append(act);
   a.append(pubBox(it,ro));
   return a;
@@ -403,6 +434,12 @@ function card(it){
 
 function renderList(){
   const list=$("#list"), nav=$("#nav"); list.textContent=""; nav.textContent="";
+  if(view==="agenda"){const now=new Date();const all=items.filter(i=>i.status==="aprovado"&&i.data);
+    const late=all.filter(i=>{const w=when(i);return w&&w<=now&&i.destino;}).length, nod=all.filter(i=>!i.destino).length, sch=all.length-late-nod;
+    const b=document.createElement("div");b.className="agenda-head";
+    const h=document.createElement("h2");h.className="month-head";h.textContent="Programação";
+    const p=document.createElement("p");p.className="pauta";p.textContent=`${sch} programados · ${late} na hora de publicar · ${nod} sem destino. Aqui aparecem só os conteúdos aprovados, por dia e horário.`;
+    b.append(h,p);list.append(b);}
   const rows=filtered(false).sort(sortItems);
   $("#nav-title").textContent=rows.length+(rows.length===1?" conteúdo":" conteúdos");
   if(!rows.length){
@@ -636,9 +673,9 @@ async function write(id,data){
 }
 async function setStatus(it,k){
   const data={status:k,atualizadoEm:Date.now()};
-  if(k==="aprovado") data.aprovadoEm=Date.now();
+  if(k==="aprovado"){data.aprovadoEm=Date.now();if(!it.destino)data.destino="comunidade";}
   if(k==="publicado") data.publicadoEm=Date.now();
-  if(await write(it.id,data)) toast(k==="aprovado"?"Aprovado. Já está na área de publicação.":k==="publicado"?"Marcado como publicado.":"Voltou para revisão.");
+  if(await write(it.id,data)) toast(k==="aprovado"?(it.data?`Aprovado e programado para ${fmtDate(it.data)}${it.horario?" às "+it.horario:""} · ${DEST[data.destino||it.destino]}.`:"Aprovado. Já está na área de publicação."):k==="publicado"?"Marcado como publicado.":"Voltou para revisão.");
 }
 
 /* editor */
@@ -648,7 +685,7 @@ function openEditor(it,forceStatus){
   editingId=it?it.id:null;
   $("#ed-title").textContent=it?"Editar conteúdo":"Novo conteúdo";
   $("#f-titulo").value=it?.titulo||""; $("#f-tipo").value=it?.tipo||"Post"; $("#f-status").value=forceStatus||it?.status||"aguardando";
-  $("#f-quadro").value=it?.quadro||""; $("#f-formato").value=it?.formato||""; $("#f-data").value=it?.data||""; $("#f-horario").value=it?.horario||"";
+  $("#f-quadro").value=it?.quadro||""; $("#f-formato").value=it?.formato||""; $("#f-data").value=it?.data||""; $("#f-horario").value=it?.horario||""; $("#f-destino").value=it?.destino||"";
   $("#f-pauta").value=it?.pauta||""; $("#f-texto").value=it?.texto||""; $("#f-material").value=it?.material||""; $("#f-notas").value=it?.notas||"";
   $("#f-legenda").value=it?.legenda||""; edImgs=(it?.imagens||[]).map(x=>({...x})); edNew=[]; $("#img-status").textContent=""; renderThumbs();
   $("#img-field").hidden=!assets&&!edImgs.length&&!fotos.length; $("#picker").hidden=true;
@@ -669,7 +706,7 @@ $("#ed-form").addEventListener("submit",async ev=>{
   const titulo=$("#f-titulo").value.trim(); if(!titulo){$("#f-titulo").focus();return;}
   const status=$("#f-status").value, now=Date.now();
   const data={titulo,tipo:$("#f-tipo").value,status,quadro:$("#f-quadro").value.trim(),formato:$("#f-formato").value.trim(),data:$("#f-data").value,
-    horario:$("#f-horario").value.trim(),pauta:$("#f-pauta").value.trim(),texto:$("#f-texto").value.replace(/\r/g,"").trim(),material:$("#f-material").value.trim(),
+    horario:$("#f-horario").value.trim(),destino:$("#f-destino").value,pauta:$("#f-pauta").value.trim(),texto:$("#f-texto").value.replace(/\r/g,"").trim(),material:$("#f-material").value.trim(),
     notas:$("#f-notas").value.trim(),legenda:$("#f-legenda").value.replace(/\r/g,"").trim(),imagens:edImgs.map(x=>({id:x.id,nome:x.nome||""})),atualizadoEm:now};
   const prev=items.find(i=>i.id===editingId);
   if(status==="aprovado"&&prev?.status!=="aprovado") data.aprovadoEm=now;
