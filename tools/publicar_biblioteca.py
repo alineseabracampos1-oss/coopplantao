@@ -7,7 +7,7 @@ Uso:
   (o formato que a leitura do banco salva com out_dir).
 - DIR_DAS_FOTOS: fotos do banco já baixadas, com o nome <asset_id>.<ext>.
 
-Publica só o que está aprovado ou publicado, com destino "site" ou "ambos" e com data e hora
+Publica só o que está aprovado ou publicado, com "site" entre os destinos e com data e hora
 já alcançadas no horário de Fortaleza. Gera posts.json e copia as fotos para img/.
 Imprime as fotos que faltam baixar e os conteúdos que ainda não têm sitePublicadoEm no banco
 (os que entram no site nesta rodada).
@@ -34,6 +34,12 @@ def quando(c):
     y, mo, d = map(int, c["data"].split("-"))
     mm = hora_min(c.get("horario"))
     return dt.datetime(y, mo, d, min(mm // 60, 23), mm % 60, tzinfo=TZ)
+
+
+def vai_pro_site(destino):
+    """destino é "comunidade+instagram+site" (ou o antigo "ambos" = comunidade + site)."""
+    d = destino or ""
+    return d == "ambos" or "site" in d.split("+")
 
 
 def slides(texto):
@@ -72,7 +78,7 @@ def main():
     for f in sorted(glob.glob(os.path.join(a.export, "*.json"))):
         c = json.load(open(f, encoding="utf-8"))
         cid = os.path.splitext(os.path.basename(f))[0]
-        if c.get("status") not in ("aprovado", "publicado") or c.get("destino") not in ("site", "ambos") or not c.get("data"):
+        if c.get("status") not in ("aprovado", "publicado") or not vai_pro_site(c.get("destino")) or not c.get("data"):
             continue
         if quando(c) > agora:
             continue

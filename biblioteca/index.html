@@ -79,6 +79,7 @@ h1 em{font-weight:500;color:var(--rosa-txt)}
 .mat{display:inline-flex;align-items:center;gap:8px;justify-self:start;background:var(--lav-cl);color:var(--azul);border-radius:40px;padding:9px 16px;font:600 .85rem var(--sans);text-decoration:none}
 .share{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
 .share a,.share button{font:600 .8rem var(--sans);border-radius:40px;padding:8px 14px;border:1px solid var(--linha);background:var(--branco);color:var(--azul2);cursor:pointer;text-decoration:none}
+.hoje .post{border:2px solid var(--lav)}
 .empty{background:var(--branco);border-radius:var(--raio);padding:36px;text-align:center;box-shadow:var(--sombra)}
 .empty h3{font:600 1.6rem var(--serif);color:var(--azul);margin-bottom:6px}
 .mats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
@@ -93,12 +94,67 @@ h1 em{font-weight:500;color:var(--rosa-txt)}
 footer{padding-block:28px 40px;color:#8a827b;font-size:.8rem;text-align:center}
 @media (min-width:860px){.post.has-cover{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}.post.has-cover .cover{aspect-ratio:auto;height:100%}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tool{transition:none}}
+/* VX-START blocos visuais */
+.vx{display:grid;gap:.9em}
+.vx>*{margin:0}
+.vx-p{white-space:pre-line}
+.vx-ic{flex:0 0 auto;font-size:1.25em;line-height:1.2;width:1.5em;text-align:center}
+.vx-ic.dot::before{content:"";display:inline-block;width:.5em;height:.5em;border-radius:50%;background:var(--vx-acc);vertical-align:middle}
+.vx-list{list-style:none;padding:0;display:grid;gap:.45em}
+.vx-list li{display:flex;gap:.55em;align-items:flex-start}
+.vx-steps{list-style:none;padding:0;display:grid;gap:.5em}
+.vx-steps li{display:flex;gap:.7em;align-items:flex-start}
+.vx-steps li>b{flex:0 0 auto;width:1.9em;height:1.9em;border-radius:50%;background:var(--vx-acc);color:var(--vx-on,#fff);display:grid;place-items:center;font-size:.85em;font-variant-numeric:tabular-nums}
+.vx-steps li>span{padding-top:.2em}
+.vx-cards{display:grid;gap:.55em}
+.vx-card{display:flex;gap:.6em;align-items:flex-start;padding:.75em .9em;border-radius:12px;background:color-mix(in srgb,currentColor 7%,transparent);border-left:4px solid var(--vx-acc)}
+.vx-card b{display:block}
+.vx-card div span{opacity:.9}
+.vx-checks{display:grid;gap:.45em}
+.vx-ck{all:unset;cursor:pointer;display:flex;gap:.65em;align-items:flex-start;padding:.55em .75em;border-radius:12px;border:1px solid color-mix(in srgb,currentColor 18%,transparent);transition:background .2s}
+.vx-ck .box{flex:0 0 auto;width:1.15em;height:1.15em;border-radius:6px;border:2px solid var(--vx-acc);margin-top:.12em;display:grid;place-items:center;font-size:.85em;font-weight:700;color:var(--vx-on,#fff)}
+.vx-ck[aria-pressed="true"]{background:color-mix(in srgb,var(--vx-acc) 14%,transparent)}
+.vx-ck[aria-pressed="true"] .box{background:var(--vx-acc)}
+.vx-ck[aria-pressed="true"] .box::after{content:"✓"}
+.vx-ck[aria-pressed="true"]>span:last-child{text-decoration:line-through;opacity:.7}
+.vx-ck:focus-visible,.vx-rev:focus-visible{outline:3px solid var(--vx-acc);outline-offset:2px}
+.vx-bar .top{display:flex;justify-content:space-between;gap:.8em;margin-bottom:.35em}
+.vx-bar .top b{color:var(--vx-acc)}
+.vx-bar .track{height:.6em;border-radius:1em;background:color-mix(in srgb,currentColor 14%,transparent);overflow:hidden}
+.vx-bar .track i{display:block;height:100%;border-radius:1em;background:var(--vx-acc);animation:vxgrow 1s ease-out both}
+@keyframes vxgrow{from{width:0}}
+.vx-big b{display:block;font:700 2.6em/1.05 var(--serif);color:var(--vx-acc)}
+.vx-big span{display:block;margin-top:.2em}
+.vx-quote{border-left:4px solid var(--vx-acc);padding:.15em 0 .15em .9em;font:italic 1.25em/1.4 var(--serif)}
+.vx-flow{display:flex;flex-wrap:wrap;align-items:center;gap:.4em}
+.vx-flow .pill{border:2px solid var(--vx-acc);border-radius:2em;padding:.3em .85em;font-weight:700;font-size:.92em}
+.vx-flow .arw{color:var(--vx-acc);font-weight:700}
+.vx-rev{all:unset;cursor:pointer;display:grid;gap:.35em;padding:.85em 1em;border-radius:14px;border:2px dashed var(--vx-acc)}
+.vx-rev .vx-q{font-weight:700}
+.vx-rev .vx-q::before{content:"❓ "}
+.vx-rev .vx-a{display:none;color:var(--vx-acc);font-weight:600}
+.vx-rev .vx-a::before{content:"👉 "}
+.vx-rev .vx-hint{font-size:.78em;opacity:.65}
+.vx-rev[aria-expanded="true"] .vx-a{display:block;animation:vxin .3s ease-out}
+.vx-rev[aria-expanded="true"] .vx-hint{display:none}
+@keyframes vxin{from{opacity:0;transform:translateY(-4px)}}
+.vx-emo{display:block;font-size:2.1em;line-height:1;margin-bottom:.25em}
+.vx-slide{gap:.55em}
+.vx-slide .vx-card{padding:.5em .6em;border-radius:9px}
+.vx-slide .vx-big b{font-size:2.3em}
+.vx-slide .vx-ck,.vx-slide .vx-rev{padding:.4em .55em}
+@media (prefers-reduced-motion:reduce){.vx-bar .track i,.vx-rev .vx-a{animation:none}}
+/* VX-END */
+.post{--vx-acc:var(--rosa-txt);--vx-on:var(--branco)}
+.slide{--vx-acc:var(--rosa-txt);--vx-on:var(--branco)}
+.slide.alt,.slide.photo{--vx-acc:var(--areia);--vx-on:var(--azul)}
+.slide .b.vx{white-space:normal}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
   <a class="logo" href="https://financasquecuram.com.br"><img src="https://financasquecuram.com.br/assets/logo/simbolo.png" alt=""><div><b>Finanças que Curam</b><span>Biblioteca</span></div></a>
-  <nav><a href="#conteudos">Conteúdos</a><a href="#ferramentas">Ferramentas</a><a href="#materiais">Materiais</a><a href="https://financasquecuram.com.br">Site</a></nav>
+  <nav><a href="#hoje">Hoje</a><a href="#conteudos">Conteúdos</a><a href="#ferramentas">Ferramentas</a><a href="#materiais">Materiais</a><a href="https://financasquecuram.com.br">Site</a></nav>
 </div></header>
 
 <main>
@@ -106,6 +162,12 @@ footer{padding-block:28px 40px;color:#8a827b;font-size:.8rem;text-align:center}
     <p class="eyebrow">Biblioteca Finanças que Curam</p>
     <h1>Organize o dinheiro<br><em>sem ignorar o que você sente.</em></h1>
     <p class="lead">Conteúdos, ferramentas e materiais gratuitos para decidir melhor antes de gastar, com o Método ENOP·SMED. Nem todo gasto possível é um gasto plausível.</p>
+  </section>
+
+  <section class="sec wrap hoje" id="hoje" hidden>
+    <p class="eyebrow" id="hoje-eb">Conteúdo do dia</p>
+    <h2 id="hoje-h">☀️ Hoje na Biblioteca</h2>
+    <div class="feed" id="hoje-feed"></div>
   </section>
 
   <section class="sec wrap" id="ferramentas">
@@ -154,13 +216,92 @@ let posts=[], tema="", q="";
 const MESES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
 function fmt(d){const [y,m,dd]=d.split("-");return `${Number(dd)} ${MESES[Number(m)-1]} ${y}`;}
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
-function paras(t){const box=el("div","txt");(t||"").split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean).forEach(p=>box.append(el("p",null,p)));return box;}
+/* VX-START · blocos visuais do texto (listas, checklist, barras, números, destaques, fluxos e cartões de revelar).
+   Linha que começa com:  "- "  item com ícone · "[ ] " checklist · "1. " passo · "70% " barra · "== " número em destaque
+   "> " frase em destaque · "?? pergunta | resposta" cartão de revelar · "A → B → C" fluxo · "Rótulo: texto" cartão · *negrito* */
+const VX_EMO=/^((?:\p{Regional_Indicator}{2}|\p{Extended_Pictographic}|[0-9#*]️?⃣)(?:️|‍\p{Extended_Pictographic}|\p{Emoji_Modifier})*)\s*/u;
+function vxEmo(t){const m=(t||"").match(VX_EMO);return m?{ic:m[1],t:t.slice(m[0].length)}:{ic:"",t:t||""};}
+function vxLine(l){
+  l=l.trim();let m;
+  if((m=l.match(/^\[( |x|X)?\]\s+(.+)/))) return {k:"check",t:m[2],on:!!m[1]&&m[1]!==" "};
+  if((m=l.match(/^[-•]\s+(.+)/))){const e=vxEmo(m[1]);return {k:"li",ic:e.ic,t:e.t};}
+  if((m=l.match(/^(\d{1,2})[.)]\s+(.+)/))) return {k:"num",n:m[1],t:m[2]};
+  if((m=l.match(/^(\d{1,3})%\s+(.+)/))) return {k:"bar",p:Math.min(100,+m[1]),t:m[2]};
+  if((m=l.match(/^==\s*(.+?)(?:\s+\|\s+(.+))?$/))) return {k:"big",v:m[1],t:m[2]||""};
+  if((m=l.match(/^>\s*(.+)/))) return {k:"quote",t:m[1]};
+  if((m=l.match(/^\?\?\s*(.+?)\s+\|\s+(.+)$/))) return {k:"rev",q:m[1],a:m[2]};
+  if(/\s→\s/.test(l)&&l.length<100) return {k:"flow",items:l.split(/\s→\s/).map(s=>s.trim()).filter(Boolean)};
+  const e=vxEmo(l);
+  if((m=e.t.match(/^([^:./?!]{2,42}):\s+(.+)$/))&&!/https?$/.test(m[1])) return {k:"label",ic:e.ic,l:m[1],t:m[2]};
+  return {k:"p",t:l};
+}
+const VX_GROUP={li:"list",check:"checks",num:"steps",label:"cards"};
+/* modo "slide": cada linha é um bloco. modo "story": parágrafos separados por linha em branco. */
+function vxParse(text,mode){
+  const raw=(text||"").replace(/\r/g,"").trim();if(!raw)return [];
+  let units=[];
+  if(mode==="slide") units=raw.split("\n").filter(s=>s.trim()).map(vxLine);
+  else raw.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).forEach(p=>{
+    const ls=p.split("\n").filter(s=>s.trim()),bs=ls.map(vxLine);
+    if(ls.length===1||bs.every(b=>b.k!=="p")) units.push(...bs); else units.push({k:"p",t:p});});
+  const out=[];
+  units.forEach(b=>{const g=VX_GROUP[b.k],last=out[out.length-1];
+    if(g){if(last&&last.k===g)last.items.push(b);else out.push({k:g,items:[b]});}else out.push(b);});
+  return out;
+}
+function vxInline(node,text){
+  String(text).split(/(\*[^*\n]+\*)/).forEach(s=>{if(/^\*[^*]+\*$/.test(s)){const b=document.createElement("b");b.textContent=s.slice(1,-1);node.append(b);}else if(s)node.append(document.createTextNode(s));});
+  return node;
+}
+function vxEl(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)vxInline(e,text);return e;}
+function vxRender(blocks,opt){
+  opt=opt||{};const f=document.createDocumentFragment();const ps=blocks.filter(b=>b.k==="p");
+  blocks.forEach(b=>{let n;
+    if(b.k==="p"){n=vxEl("p","vx-p",b.t);if(opt.p)opt.p(n,ps.indexOf(b),ps.length,b);}
+    else if(b.k==="list"){n=vxEl("ul","vx-list");b.items.forEach(i=>{const li=vxEl("li");li.append(vxEl("span","vx-ic"+(i.ic?"":" dot"),i.ic||""),vxEl("span",null,i.t));n.append(li);});}
+    else if(b.k==="checks"){n=vxEl("div","vx-checks");b.items.forEach(i=>{const c=vxEl("button","vx-ck");c.type="button";c.setAttribute("aria-pressed",String(i.on));
+      c.append(vxEl("span","box"),vxEl("span",null,i.t));c.addEventListener("click",ev=>{ev.stopPropagation();c.setAttribute("aria-pressed",String(c.getAttribute("aria-pressed")!=="true"));});n.append(c);});}
+    else if(b.k==="steps"){n=vxEl("ol","vx-steps");b.items.forEach(i=>{const li=vxEl("li");li.append(vxEl("b",null,i.n),vxEl("span",null,i.t));n.append(li);});}
+    else if(b.k==="cards"){n=vxEl("div","vx-cards");b.items.forEach(i=>{const c=vxEl("div","vx-card");if(i.ic)c.append(vxEl("span","vx-ic",i.ic));
+      const d=vxEl("div");d.append(vxEl("b",null,i.l),vxEl("span",null,i.t));c.append(d);n.append(c);});}
+    else if(b.k==="bar"){n=vxEl("div","vx-bar");const top=vxEl("div","top");top.append(vxEl("span",null,b.t),vxEl("b",null,b.p+"%"));
+      const tr=vxEl("div","track");const fill=vxEl("i");fill.style.width=b.p+"%";tr.append(fill);n.append(top,tr);}
+    else if(b.k==="big"){n=vxEl("div","vx-big");n.append(vxEl("b",null,b.v));if(b.t)n.append(vxEl("span",null,b.t));}
+    else if(b.k==="quote"){n=vxEl("blockquote","vx-quote",b.t);}
+    else if(b.k==="flow"){n=vxEl("div","vx-flow");b.items.forEach((s,i)=>{if(i)n.append(vxEl("span","arw","→"));n.append(vxEl("span","pill",s));});}
+    else if(b.k==="rev"){n=vxEl("button","vx-rev");n.type="button";n.setAttribute("aria-expanded","false");
+      n.append(vxEl("span","vx-q",b.q),vxEl("span","vx-a",b.a),vxEl("span","vx-hint","Toque para ver a resposta"));
+      n.addEventListener("click",ev=>{ev.stopPropagation();n.setAttribute("aria-expanded",String(n.getAttribute("aria-expanded")!=="true"));});}
+    f.append(n);});
+  return f;
+}
+/* encaixa o conteúdo na lâmina 4:5: reduz o miolo até caber */
+function vxFit(root){requestAnimationFrame(()=>root.querySelectorAll(".slide").forEach(sl=>{const mid=sl.children[1];if(!mid)return;let z=1;mid.style.zoom="";
+  while(sl.scrollHeight>sl.clientHeight+1&&z>.55){z-=.05;mid.style.zoom=z;}}));}
+/* texto para WhatsApp: os blocos viram símbolos que o WhatsApp mostra bem */
+function vxPlain(text){const ans=[];
+  const out=(text||"").replace(/\r/g,"").split("\n").map(l=>{if(!l.trim())return l;const b=vxLine(l);
+    switch(b.k){
+      case "check":return (b.on?"✅ ":"⬜ ")+b.t;
+      case "li":return (b.ic?b.ic+" ":"• ")+b.t;
+      case "bar":{const n=Math.round(b.p/10);return "▰".repeat(n)+"▱".repeat(10-n)+" "+b.p+"% "+b.t;}
+      case "big":return "*"+b.v+"*"+(b.t?" "+b.t:"");
+      case "quote":return "_"+b.t+"_";
+      case "rev":ans.push("👉 "+b.q.replace(/\s*[?…]$/,"")+": "+b.a);return "❓ "+b.q;
+      case "flow":return b.items.join(" ➜ ");
+      case "label":return (b.ic?b.ic+" ":"")+"*"+b.l+":* "+b.t;
+      default:return l;}}).join("\n");
+  /* as respostas dos cartões de revelar ficam no fim, depois de um espaço, para não estragar a surpresa */
+  return ans.length?out+"\n\n⬇️ Respostas mais abaixo ⬇️\n"+".\n".repeat(6)+ans.join("\n"):out;
+}
+/* VX-END */
+function paras(t){const box=el("div","txt vx");box.append(vxRender(vxParse(t,"story")));return box;}
 function deck(p){
   const d=el("div","deck");d.setAttribute("aria-label","Lâminas do carrossel");
   p.slides.forEach((s,i)=>{const c=el("div","slide"+(i===0?" first":"")+(i%2===1?" alt":""));
     const img=(p.imagens||[])[i];if(img){c.classList.add("photo");c.style.backgroundImage=`url("${img}")`;}
     c.append(el("div","n",i===0?(p.quadro||"Finanças que Curam"):String(i+1).padStart(2,"0")));
-    const mid=el("div");mid.append(el("p","t",s.t));if(s.b)mid.append(el("p","b",s.b));c.append(mid);
+    const mid=el("div");const e=vxEmo(s.t);if(e.ic)mid.append(el("span","vx-emo",e.ic));mid.append(el("p","t",e.t));if(s.b){const b=el("div","b vx vx-slide");b.append(vxRender(vxParse(s.b,"slide")));mid.append(b);}c.append(mid);
     const f=el("div","f");f.append(el("span",null,"Finanças que Curam"),el("span",null,`${i+1}/${p.slides.length}`));c.append(f);d.append(c);});
   return d;
 }
@@ -182,7 +323,16 @@ function card(p){
   const cp=el("button",null,"Copiar link");cp.type="button";cp.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(url);cp.textContent="Link copiado";}catch(e){cp.textContent=url;}});
   sh.append(wa,cp);body.append(sh);a.append(body);return a;
 }
-function render(){
+function hojeISO(){return new Date(Date.now()-3*3600e3).toISOString().slice(0,10);}
+/* destaque: o que entrou hoje (horário de Fortaleza) ou, se ainda não há, o dia mais recente */
+function renderHoje(){
+  const sec=$("#hoje"),f=$("#hoje-feed");f.textContent="";if(!posts.length){sec.hidden=true;return;}
+  const hoje=hojeISO(),dia=posts.some(p=>p.data===hoje)?hoje:posts.map(p=>p.data).sort().pop();
+  $("#hoje-eb").textContent=dia===hoje?"Conteúdo do dia · "+fmt(dia):"Último conteúdo · "+fmt(dia);
+  $("#hoje-h").textContent=dia===hoje?"☀️ Hoje na Biblioteca":"✨ O mais recente";
+  posts.filter(p=>p.data===dia).forEach(p=>{const c=card(p);c.id="h-"+p.id;f.append(c);});vxFit(f);sec.hidden=false;
+}
+function render(){renderHoje();
   const temas=[...new Set(posts.map(p=>p.quadro).filter(Boolean))];
   const f=$("#filters");f.textContent="";
   [["","Todos"],...temas.map(t=>[t,t])].forEach(([v,l])=>{const b=el("button",null,l);b.type="button";b.setAttribute("aria-pressed",String(tema===v));b.addEventListener("click",()=>{tema=v;render();});f.append(b);});
@@ -195,7 +345,7 @@ function renderFeed(){
   const qq=q.trim().toLowerCase();
   const rows=posts.filter(p=>(!tema||p.quadro===tema)&&(!qq||(p.titulo+" "+(p.texto||"")+" "+(p.legenda||"")+" "+(p.slides||[]).map(s=>s.t+" "+s.b).join(" ")).toLowerCase().includes(qq)));
   if(!rows.length){const e=el("div","empty");e.append(el("h3",null,posts.length?"Nenhum conteúdo encontrado":"Os primeiros conteúdos chegam em breve"),el("p",null,posts.length?"Tente outro tema ou outra palavra.":"Enquanto isso, use as ferramentas e baixe os materiais abaixo."));feed.append(e);return;}
-  rows.forEach(p=>feed.append(card(p)));
+  rows.forEach(p=>feed.append(card(p)));vxFit(feed);
   if(location.hash.startsWith("#p-")){const t=document.querySelector(location.hash);if(t)t.scrollIntoView();}
 }
 fetch("posts.json",{cache:"no-store"}).then(r=>r.ok?r.json():{posts:[]}).then(d=>{posts=(d.posts||[]);render();}).catch(()=>{posts=[];render();});
