@@ -27,6 +27,7 @@ h1 em{font-weight:normal;color:var(--sage)}
 .lead{color:var(--muted);font-size:17px;margin:0 0 26px;max-width:46ch}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;padding:15px 22px;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none}
 .btn.main{background:var(--deep);color:var(--deep-fg)}
+.btn.mat{margin-top:12px;width:100%}
 .btn.soft{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn.wa{background:transparent;color:var(--ink);border:1.5px solid #25a366}
 .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:13px;color:var(--muted)}
@@ -102,7 +103,7 @@ h1 em{font-weight:normal;color:var(--sage)}
       <div class="block"><h3>Sua força</h3><p id="r-forca"></p></div>
       <div class="block"><h3>Seu ponto de atenção</h3><p id="r-cuidado"></p></div>
       <div class="manobra"><div class="eyebrow">Sua manobra</div><p id="r-manobra"></p></div>
-      <div class="block"><h3>Primeiro passo nesta semana</h3><p id="r-passo"></p></div>
+      <div class="block"><h3>Primeiro passo nesta semana</h3><p id="r-passo"></p><a class="btn main mat" id="r-mat" href="#" target="_blank" rel="noopener"></a><p class="note" id="r-mat-note"></p></div>
       <div class="actions">
         <button class="btn main" id="copy" type="button">Copiar resultado</button>
         <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
@@ -129,25 +130,29 @@ const P={
     forca:"Disciplina e prudência. Você já faz o que muita gente ainda está tentando aprender: gastar menos do que ganha.",
     cuidado:"O medo pode travar o crescimento. Dinheiro parado na conta perde para a inflação, e a culpa aparece até nos gastos que você poderia se permitir.",
     manobra:"Coloque uma parte em renda fixa segura, como Tesouro Selic ou CDB com liquidez diária. O dinheiro trabalha sem tirar o seu sono. E reserve um valor mensal para você, sem culpa.",
-    passo:"Faça o Raio-X financeiro da Terça Técnica e veja quantos meses de reserva você já tem. Talvez você esteja mais segura do que sente."},
+    passo:"Faça o Raio-X financeiro e veja quantos meses de reserva você já tem. Talvez você esteja mais segura do que sente.",
+    mat:["Baixar a planilha do Raio-X","Raio-X-Financeiro-FQC.xlsx"]},
  B:{name:"Lobo Impulsivo",tag:"Coragem de sobra. A emoção chega antes da razão.",
     desc:"Você vive o presente com intensidade e decide rápido. Isso traz experiências boas, mas também compras que pareciam urgentes e depois pesam na fatura.",
     forca:"Energia e coragem para agir. Quem decide rápido também consegue mudar rápido quando encontra o caminho certo.",
     cuidado:"Compras por recompensa, por pressa ou por comparação. O alívio dura pouco e a parcela dura meses.",
     manobra:"Regra das 72 horas: o que não estava na lista espera três dias. E defina um teto de gasto livre por mês, para aproveitar sem culpa e sem susto.",
-    passo:"Participe do Desafio Diário de Gastos Emocionais e descubra qual emoção mais gasta por você."},
+    passo:"Anote seus gastos por 7 dias com a emoção de cada um e descubra qual emoção mais gasta por você. A planilha abaixo já tem a coluna Emoção.",
+    mat:["Baixar o mini sistema financeiro","Mini-Sistema-Financeiro-FQC.xlsx"]},
  C:{name:"Lobo Estrategista",tag:"Já junta emoção e técnica. Agora é refinar.",
     desc:"Você planeja, acompanha e sabe para onde o dinheiro vai. As emoções aparecem, mas não decidem sozinhas. É o perfil que a Manada inteira quer alcançar.",
     forca:"Visão de longo prazo e equilíbrio. Você consegue aproveitar o presente sem sacrificar o futuro.",
     cuidado:"Excesso de controle pode virar rigidez. E ficar no mesmo plano por muito tempo pode deixar dinheiro na mesa.",
     manobra:"Automatize o que funciona e acompanhe os seus 4 indicadores todo mês. Depois, ajude quem está começando: ensinar também consolida.",
-    passo:"Calcule seus 4 indicadores no painel da Manada e compartilhe uma dica na Sexta Livre. Você é candidata a Guardiã da Manada."},
+    passo:"Calcule seus 4 indicadores (taxa de poupança, endividamento, meses de reserva e peso do custo fixo) na planilha abaixo e compartilhe uma dica na Sexta Livre. Você é candidata a Guardiã da Manada.",
+    mat:["Baixar o Painel dos 4 Indicadores","Painel-4-Indicadores-FQC.xlsx"]},
  D:{name:"Lobo Distraído",tag:"O dinheiro escorre sem você perceber.",
     desc:"Você evita olhar para o dinheiro. Não por descuido, mas porque o assunto cansa ou incomoda. Enquanto isso, pequenos gastos se acumulam e o mês termina antes do salário.",
     forca:"Leveza. Você não vive em função do dinheiro, e isso é saudável. Só falta um pouco de direção.",
     cuidado:"O que não é visto não pode ser cuidado. Assinaturas esquecidas, juros e gastos pequenos viram um valor grande no fim do ano.",
     manobra:"Comece pequeno: o Raio-X de 15 minutos e uma olhada por semana no extrato, sempre no mesmo dia. Consistência vale mais do que perfeição.",
-    passo:"Abra a fatura do cartão hoje e conte quantas assinaturas você paga. Esse é o seu primeiro passo."},
+    passo:"Abra a fatura do cartão hoje e conte quantas assinaturas você paga. Depois, faça o Raio-X de 15 minutos com a planilha abaixo.",
+    mat:["Baixar a planilha do Raio-X","Raio-X-Financeiro-FQC.xlsx"]},
 };
 const ORDER=["A","B","C","D"];
 let i=0, ans=[];
@@ -174,6 +179,7 @@ function result(){
   ORDER.forEach(k=>{const r=document.createElement("div");r.className="bar";const l=document.createElement("span");l.textContent=P[k].name.replace("Lobo ","");
     const t=document.createElement("div");const f=document.createElement("span");f.style.width=(c[k]/Q.length*100)+"%";t.append(f);const n=document.createElement("b");n.textContent=c[k];r.append(l,t,n);bars.append(r);});
   $("#r-desc").textContent=pr.desc;$("#r-forca").textContent=pr.forca;$("#r-cuidado").textContent=pr.cuidado;$("#r-manobra").textContent=pr.manobra;$("#r-passo").textContent=pr.passo;
+  $("#r-mat").textContent="📥 "+pr.mat[0];$("#r-mat").href="https://biblioteca-financasquecuram.netlify.app/materiais/"+pr.mat[1];$("#r-mat-note").textContent="Abre no Excel, no Google Planilhas ou no app de planilhas do celular. Preencha só as células amarelas.";
   const share=`Fiz o quiz da Manada e sou ${pr.name} 🐺\n"${pr.tag}"\n\nMinha manobra: ${pr.manobra}\n\n#EuNaManada #FinançasQueCuram`;
   $("#wa").href="https://wa.me/?text="+encodeURIComponent(share);
   $("#copy").onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(share);ok=true;}catch(e){}
